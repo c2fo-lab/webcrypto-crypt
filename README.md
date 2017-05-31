@@ -13,7 +13,7 @@
 
 **webcrypto-crypt** provides a single library for encrypting and decrypting [data at rest](https://en.wikipedia.org/wiki/Data_at_rest#Concerns_about_data_at_rest) in node and the browser.  It enables [secret key cryptography](https://www.ibm.com/support/knowledgecenter/SSYKE2_8.0.0/com.ibm.java.security.component.80.doc/security-component/jsse2Docs/secretkeycryptography.html) [with a passphrase](https://en.wikipedia.org/wiki/PBKDF2#Purpose_and_operation) using either [Window.crypto](https://developer.mozilla.org/en-US/docs/Web/API/Window/crypto) or [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl), depending on the environment in which it's running.  Please see this important [**WARNING**](https://github.com/PeculiarVentures/node-webcrypto-ossl#warning).
 
-For node, webcrypto-crypt also installs a utility called **wcrypt** intended to help with larger files, other sources of piped data, etc. from the command line.
+For node, webcrypto-crypt also installs a utility called **wcrypt** intended to help with files on disk, other sources of piped data, etc. from the command line.
 
 Technical details on webcrypto-crypt's default [key derivation function](https://en.wikipedia.org/wiki/Key_derivation_function) and [symmetric key algorithm](https://en.wikipedia.org/wiki/Symmetric-key_algorithm) can be found in the W3C WebCrypto API specification sections, [PBKDF2](https://www.w3.org/TR/WebCryptoAPI/#pbkdf2) and [AES-GCM](https://www.w3.org/TR/WebCryptoAPI/#aes-gcm).
 
@@ -25,7 +25,7 @@ Technical details on webcrypto-crypt's default [key derivation function](https:/
 
 ## Command-line
 
-### from prompt
+### From prompt
 
     λ wcrypt | wcrypt -d
     Data to encrypt: no honour among consultants.
@@ -34,7 +34,7 @@ Technical details on webcrypto-crypt's default [key derivation function](https:/
     Passphrase?
     no honour among consultants.λ
 
-### from and to file
+### From and to file
 
     λ wcrypt -i LICENSE -o LICENSE.wcrypt
     Passphrase?
@@ -45,7 +45,7 @@ Technical details on webcrypto-crypt's default [key derivation function](https:/
 
     Copyright (c) 2017 C2FO...
 
-### from command line arg
+### From command line arg
  
     λ wcrypt -a 'edge of a dynastic rebellion' > mydata.wcrypt
     Passphrase?
@@ -54,7 +54,7 @@ Technical details on webcrypto-crypt's default [key derivation function](https:/
     Passphrase?
     edge of a dynastic rebellionλ
 
-### from pipe
+### From pipe
 
     λ echo 'pretty despite its implicit threat' | wcrypt | wcrypt -d
     Passphrase?
@@ -177,7 +177,7 @@ Note that **webcrypto-crypt** injects [browserify](https://www.npmjs.com/package
 
 ## Tested environments
 
-| **OS** | **Browser** | **Version** |
+| **OS** | **Environment** | **Version** |
 | :-------- | :------- | :------- |
 | Mac Sierra | Firefox  | 53.0.3 (64-bit) |
 | Mac Sierra | Chrome  | 58.0.3029.110 (64-bit) |
@@ -196,7 +196,7 @@ A file that should run the module tests in the browser is ```test/browser/wcrypt
 
 # API
 
-## Wcrypt.parseHeader(Buffer data);
+## Wcrypt.parseHeader(Buffer data)
 
 Provided ```data``` is a valid webcrypto-wcrypt header, parse it and return an object with the following structure:
 
@@ -217,7 +217,7 @@ Provided ```data``` is a valid webcrypto-wcrypt header, parse it and return an o
     }
 ```
 
-## new Wcrypt.cipher(String passphrase || Object options);
+## new Wcrypt.cipher(String passphrase || Object options)
 
 Instantiate a webcrypto-crypt object using just a passphrase or more options beyond the passphrase.  When passing in an object, the minimum specification looks like ```{material: { passphrase: <your passphrase> } }```.  All the possible options are described below:
 
@@ -266,7 +266,7 @@ Encrypt the given data and include a header.
 
 Returns a promise with its resolved value set to a Buffer of the encrypted data.
 
-## wcrypt.encryptDelimited(Buffer data).then(() => {...
+## wcrypt.encryptDelimited(Buffer data)
 
 Encrypt the given data and include a delimiter.
 
@@ -284,13 +284,13 @@ Return the current file signature in use by this library as a ```Buffer```.
 
 The current name of this library, e.g., ```webcrypto-crypt```.
 
-## wcrypt.rawDecrypt(Buffer data, options)
+## wcrypt.rawDecrypt(Buffer data, Object options)
 
 Decrypt ```data```.  Assumes no header present unless ```assumeHeader: true``` is passed in via an ```options``` object.
 
 Returns a promise with its resolved value set to a Buffer of the decrypted data.
 
-## wcrypt.rawEncrypt(Buffer data, options).then(() => {...
+## wcrypt.rawEncrypt(Buffer data, Object options)
 
 Returns a promise with its resolved value set to a Buffer of the encrypted data.
 
@@ -358,7 +358,7 @@ Installing **webcrypto-crypt** also installs a command-line utilty, **wcrypt**:
 
 ## Command-line examples
 
-Note that some of the larger files in these examples may take a few minutes to download or stream.
+Note that some of these examples may take a few minutes to download or stream.
 
 Note also that you may set the environment variable **WCRYPT_PASS** to have **wcrypt** skip its passphrase prompts.
 
@@ -394,7 +394,7 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
 
 # Header structure
 
-See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L298-L303).
+See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L320-L325).
 
 # Security
 
