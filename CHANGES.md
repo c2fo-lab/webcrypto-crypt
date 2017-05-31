@@ -1,3 +1,7 @@
+## 2017-05-31  Release 0.1.2
+
+Fix package versioning.
+
 ## 2017-05-31  Release 0.1.1
 
 Fix decrypt() bug resetting material values.

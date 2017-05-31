@@ -3,14 +3,14 @@ Hash: SHA512
 
 bin/browserify.js   8.0K       5df60dd3ae65077e97176ac0dcbddb089cdaec9b1339ce065b6383ad5ca16556
 bin/wcrypt.js       8.0K       b626bbbb3d8a646c4f5ca71547f29c81849f81d03ed9658367fd45c293c53228
-CHANGES.md          4.0K       6663e2add152fdc2ffbef07737557883c99873de3ccfccece42b2e3a0dd7be97
+CHANGES.md          4.0K       9df7edd3ece46fab709520b1d4a3aca111b42f26749f22bf410c74a839edc67c
 examples/prompts.js 4.0K       924b7bf08edceaacbb8fd7d3914e03f88ec18cebc2d5bb657fb80ad1557f89b2
 index.js            12K        b71e4f12805c01c0deccdc5323477f87b8e15a832344dffd5fa776a101a577bf
 lib/config.json     4.0K       c8f2fa4101794921bafc9a6fbf844f98e7f44d2cfaa370298dad6063cab83ee7
 lib/transcoder.js   4.0K       63f59b2c10f0f7a7e9f0cd402fdf253c5a995e2e7cbfabcdec13ce5a8051afb5
 LICENSE             4.0K       a6f5c7d3a2606ed237064349fd7fe8fff0646f71512ef8e6842cd5e1923976c0
-package.json        4.0K       757e54230a569f64d3f2da29d9022131e61637cbfc69b0ed81b82ee3ea92085a
-README.md           16K        165523e7ec4828938b2c0313620fce63aa159ae4324ad8ec243cfa69440f7de3
+package.json        4.0K       444832b62c1df7116ba618307cebe50e35eaa9fee680886dee82eabcaa56c356
+README.md           16K        20d90d4d037138e003cf0f830d88fb571acdd3c0f997d6c12938331a96dfe17c
 test/data.js        28K        c40cfa43cebe4727ce5464e3370210d29363fab458a617cc766fc98ad7ecaf52
 test/decrypt.js     8.0K       9e3cc619497a94c683954bb2caf3ac561f80ff13631b38783153f15c6451673d
 test/encrypt.js     8.0K       fb195d377aec5cdf508f79c171229dc41336eaf7bccf889c41dd8e9e2fe3c53b
@@ -20,11 +20,11 @@ test/mocks.js       4.0K       aa84508b9937a6e46f871289525697f9ad28511106f7191ed
 Version: Keybase OpenPGP v2.0.71
 Comment: https://keybase.io/crypto
 
-wsBcBAABCgAGBQJZLvUbAAoJEFXbw7aEigbJb44IALsov5qQ1b2mFA3QrpovDyu9
-PhEBNaQFNFuywrOCsmk+tb4qE77kFJ1zVb7TLlL17orfb8te/RMLEsyp1X9S1g15
-v8lNPIIqTroAmOo7Qw8DTlU0QK9QuMTu3vW6QunMuDwKsVTYn4d7NYcuS6hv8Wt4
-+pKcXJNAY4O8TY2PshIxJyP1qhhV+rLM/8bCurtBoyamtwUi9JGVIqPHkLwcuQsB
-WdWWIPaTXeuvkkiG2kq8rYN+DpvuxB9ZJ0toBoFALyxcQ39i0MKhS1ff+NRzjCnL
-wIpkanDf9AdjRIIpShz7xqbx4VSs0om25tHR+03VoQ+GWsFrsAKRDuyY/av9DyY=
-=ZdQz
+wsBcBAABCgAGBQJZLwzuAAoJEFXbw7aEigbJ/AUIAKYhSUA4y3KSrFyhZqVWs8s6
+VCyif2uvBtPU15Ux5VraXv6yspTfbzU2vxBeUCBCLUVwCB+ymjmzf7bd/DtYwc89
+zDDy9r2W5X7U2/nLDRp0congxW8sxGPgrNBTRuSMcWk4vFVDR01SicCNzJUaxT42
+iEPPmlPT4BMjEubzDH3uRtjk8QZQdmVGgXfsYUQAg+SHB2bKvnUY8o3NVcLHjNXj
+tPIvsmMf9L+sOPEo8GgkpfYy6ROItDcQfyZv7ne7uuZDyCC9BwKWe6BL/SnSt6Dd
+7VxJAeMxh4gnC8tAoe9bvQh6eJi8A4mcJcbSEMSZ+WNsdUKO7+OIHVpsOCzTia4=
+=nJXg
 -----END PGP SIGNATURE-----

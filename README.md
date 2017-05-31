@@ -314,7 +314,7 @@ Convenience method for browser contexts to encode the passed-in ```data``` using
 
 ## wcrypt.version
 
-The current version of this library, e.g., ```0.1.0```.
+The current version of this library, e.g., ```0.1.2```.
 
 # Command-line
 
