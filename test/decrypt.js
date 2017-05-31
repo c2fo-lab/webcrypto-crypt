@@ -220,7 +220,7 @@ describe("Decrypt", function() {
         describe("decrypt", function() {
 
             it("Returns file signature", function(done) {
-                var wcrypt = new Wcrypt.cipher(testOptions);
+                var wcrypt = new Wcrypt.cipher(mocks.passphrase);
                 wcrypt.decrypt(Buffer.from(variableWithHeader.hex, 'hex'))
                 .then((buf) => {
                     expect(buf).toEqual(Buffer.from(variablePlain, 'utf8'));

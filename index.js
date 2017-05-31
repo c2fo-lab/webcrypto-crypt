@@ -33,7 +33,7 @@ module.exports = WCRYPT = {
 
         _setConfig(options.config);
         _setMaterial(options.material);
-        _debug('Debuging enabled.');
+        _debug('Debugging enabled.');
 
         wcrypt.createHeader = function () {
             _debug('createHeader');
@@ -86,20 +86,21 @@ module.exports = WCRYPT = {
 
         function _decrypt (chunk, options) {
             options = options || {};
+            var data;
+            if (options.assumeHeader) {
+                var parsed = WCRYPT.parseHeader(chunk);
+                data = parsed.payload;
+                _setConfig(parsed.config);
+                _setMaterial(parsed.material);
+                _debug('_decrypt salt', Buffer.from(material.salt).toString('hex'));
+            }
+            else {
+                data = chunk;
+            }
             _debug('_decrypt', JSON.stringify(options));
             return _getKey()
                 .then((key) => {
                     material.key = key;
-                    var data;
-                    if (options.assumeHeader) {
-                        var parsed = WCRYPT.parseHeader(chunk);
-                        data = parsed.payload;
-                        _setConfig(parsed.config);
-                        _setMaterial(parsed.material);
-                    }
-                    else {
-                        data = chunk;
-                    }
                     return _wDecrypt(data);
                 })
                 .catch((err) => {
@@ -114,7 +115,7 @@ module.exports = WCRYPT = {
         }
 
         function _deriveKey () {
-            _debug('_deriveKey');
+            _debug('_deriveKey salt', Buffer.from(material.salt).toString('hex'));
             return wcrypt.subtle.deriveKey(
                 {
                     name: config.derive.algorithm,
@@ -227,7 +228,7 @@ module.exports = WCRYPT = {
 
         function _setConfig (options) {
             options = options || {};
-            _debug('_setConfig', JSON.stringify(options));
+            _debug('_setConfig options', JSON.stringify(options));
             config.crypto.algorithm  = options.algorithm  || config.crypto.algorithm;
             config.crypto.keyUsages  = options.keyUsages  || config.crypto.usages;
             config.crypto.tagLength  = options.tagLength  || config.crypto.tagLength;
@@ -237,17 +238,17 @@ module.exports = WCRYPT = {
             config.derive.algorithm  = options.derivation || config.derive.algorithm;
             config.derive.hash       = options.hash       || config.derive.hash;
             config.derive.iterations = options.iterations || config.derive.iterations;
-            _debug('_setConfig', JSON.stringify(config));
+            _debug('_setConfig result', JSON.stringify(config));
 
         };
 
         function _setMaterial (params) {
             params = params || {};
-            _debug('_setMaterial', JSON.stringify(params));
+            _debug('_setMaterial params', JSON.stringify(params));
             material.iv = params.iv   || material.iv || _getRandomBytes(12);
-            material.passphrase = params.passphrase;
+            material.passphrase = params.passphrase || material.passphrase;
             material.salt = params.salt || material.salt || _getRandomBytes(16);
-            _debug('_setMaterial', JSON.stringify(material));
+            _debug('_setMaterial result', JSON.stringify(material));
         }
 
         function _uriSafeBase64 (data) {
