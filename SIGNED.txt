@@ -3,14 +3,15 @@ Hash: SHA512
 
 bin/browserify.js   8.0K       5df60dd3ae65077e97176ac0dcbddb089cdaec9b1339ce065b6383ad5ca16556
 bin/wcrypt.js       8.0K       b626bbbb3d8a646c4f5ca71547f29c81849f81d03ed9658367fd45c293c53228
-CHANGES.md          4.0K       98706bc512c4286193ec9294ae3ae5fa3329c2be4e43d0e33ff7d4bd3b9760d5
+CHANGES.md          4.0K       b8627ee0f8de4a157810025b12f6b1fb008c9deff22dca4cc7a7d371431b2d98
 examples/prompts.js 4.0K       924b7bf08edceaacbb8fd7d3914e03f88ec18cebc2d5bb657fb80ad1557f89b2
 index.js            12K        b71e4f12805c01c0deccdc5323477f87b8e15a832344dffd5fa776a101a577bf
 lib/config.json     4.0K       c8f2fa4101794921bafc9a6fbf844f98e7f44d2cfaa370298dad6063cab83ee7
 lib/transcoder.js   4.0K       63f59b2c10f0f7a7e9f0cd402fdf253c5a995e2e7cbfabcdec13ce5a8051afb5
 LICENSE             4.0K       a6f5c7d3a2606ed237064349fd7fe8fff0646f71512ef8e6842cd5e1923976c0
-package.json        4.0K       91ccc4a2a1914bd95d88510790dfdf80b01e4d7c6027ebbbff7b51ef67d6e784
-README.md           16K        20d90d4d037138e003cf0f830d88fb571acdd3c0f997d6c12938331a96dfe17c
+package-lock.json   104K       758fbebd0b3e6cf73c2cf51e903d18f93c2e3b8488dddc1aa1580b2d7f8c00f3
+package.json        4.0K       f9a5617eb54ae061990aef83faa85b374656f1d1ce288f7d43894d2e98163352
+README.md           16K        0720f760fedf922b5a305f192d50d34a1e703b58d8898cc03dd8c82cdc5b36d9
 test/data.js        28K        c40cfa43cebe4727ce5464e3370210d29363fab458a617cc766fc98ad7ecaf52
 test/decrypt.js     8.0K       9e3cc619497a94c683954bb2caf3ac561f80ff13631b38783153f15c6451673d
 test/encrypt.js     8.0K       fb195d377aec5cdf508f79c171229dc41336eaf7bccf889c41dd8e9e2fe3c53b
@@ -20,11 +21,11 @@ test/mocks.js       4.0K       aa84508b9937a6e46f871289525697f9ad28511106f7191ed
 Version: Keybase OpenPGP v2.0.71
 Comment: https://keybase.io/crypto
 
-wsBcBAABCgAGBQJZLxa6AAoJEFXbw7aEigbJ4SUH/RQXZ6VsSXdcjsSxUCUX5NV7
-ZPPrAZvkgu1giWrJmR58ktcI70bkSZDXo9X9hdWDlpDy7NSB0yX1sM+Pwv0LsA1X
-+KlheJDivnp+QF5g+pSAJjILc6udzdpslZrW6zj/IoBJtgmo6f2BbvAXgomxVEdW
-PfOfUFNWgwi77VAvY2W98izXLjxjK9a6dUeMFp6IDAIlwrJrr2cQH4pejtguQ7Sw
-slXAp4hq+9354YIavvVP8livEMG8qfGz6G6UZlsuDZXBrXwzmjNFlPjlfTfhiMDp
-m92LKk9SLHjQMqNmRL1nyOno4yD0cftPnBOBUxdefipU9fM5xrFfwGxuzowF/2Y=
-=dFSr
+wsBcBAABCgAGBQJZNAdHAAoJEFXbw7aEigbJi/kH/2O6OGSSPnVZzN3mSkVmYdQ5
+SpbQJhT3xAYSIkDuuIpPryrW/098uT08WMoUFtjlX+zvxds1NYVLXt0IXo1weMKy
+8JWqzj1kdZ7VtPZAMHpvRS8j2ARJvqLqKkD4HSuMVaQEo2r3mzxnlcruWZKe2Klv
+qhgcVRQDGO0J8Jq71+HgAZahkZ+zZJoUgqB9IgKi46cHfuGdZ4S367Q36uAgQ0W9
+c8YKke5/lhQuZ/ysNha5N0hZhKGwD+Wg1Nf4YpQWnRbaIRX1E+jkcPe2EueEvcen
+x1At4KMjmRUYAbw5enftqJfrb1moKmQ6qVQl9VPrp801A9yLtu5tp3/BCU+TFl8=
+=ZE1q
 -----END PGP SIGNATURE-----
