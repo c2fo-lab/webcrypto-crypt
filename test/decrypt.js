@@ -48,37 +48,37 @@ describe("Decrypt", function() {
         it("Accepts buffer", (done) => {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(Buffer.from(fixedCipher.hex, 'hex'))
-            .then((buf) => {
-                expect(buf).toExist();
-                done();
-            })
-            .catch((err) => {
-                done(err);
-            });
+                .then((buf) => {
+                    expect(buf).toExist();
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
 
         it("Returns buffer", (done) => {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(Buffer.from(fixedCipher.hex, 'hex'))
-            .then((buf) => {
-                expect(Buffer.isBuffer(buf)).toBeTruthy();
-                done();
-            })
-            .catch((err) => {
-                done(err);
-            });
+                .then((buf) => {
+                    expect(Buffer.isBuffer(buf)).toBeTruthy();
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
 
         it("Returns expected buffer", (done) => {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(Buffer.from(fixedCipher.hex, 'hex'))
-            .then((buf) => {
-                expect(buf).toEqual(Buffer.from(fixedPlain, 'utf8'));
-                done();
-            })
-            .catch((err) => {
-                done(err);
-            });
+                .then((buf) => {
+                    expect(buf).toEqual(Buffer.from(fixedPlain, 'utf8'));
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
     });
 
@@ -104,37 +104,37 @@ describe("Decrypt", function() {
         it("Accepts buffer", function(done) {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(Buffer.from(variableCipher.hex, 'hex'))
-            .then((buf) => {
-                expect(buf).toExist();
-                done();
-            })
-            .catch((err) => {
-                done(err);
-            });
+                .then((buf) => {
+                    expect(buf).toExist();
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
 
         it("Returns buffer", function(done) {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(Buffer.from(variableCipher.hex, 'hex'))
-            .then((buf) => {
-                expect(Buffer.isBuffer(buf)).toBeTruthy();
-                done();
-            })
-            .catch((err) => {
-                done(err);
-            });
+                .then((buf) => {
+                    expect(Buffer.isBuffer(buf)).toBeTruthy();
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
 
         it("Returns expected buffer", function(done) {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(Buffer.from(variableCipher.hex, 'hex'))
-            .then((buf) => {
-                expect(buf).toEqual(Buffer.from(variablePlain, 'utf8'));
-                done();
-            })
-            .catch((err) => {
-                done(err);
-            });
+                .then((buf) => {
+                    expect(buf).toEqual(Buffer.from(variablePlain, 'utf8'));
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
     });
 
@@ -160,58 +160,58 @@ describe("Decrypt", function() {
         it("Accepts buffer", function(done) {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(mocks.pngCipher)
-            .then((buf) => {
-                expect(buf).toExist();
-                done();
-            })
-            .catch((err) => {
-                done(err);
-            });
+                .then((buf) => {
+                    expect(buf).toExist();
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
     
         it("Returns buffer", function(done) {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(mocks.pngCipher)
-            .then((buf) => {
-                expect(Buffer.isBuffer(buf)).toBeTruthy();
-                done();
-            })
-            .catch((err) => {
-                done(err);
-            });
+                .then((buf) => {
+                    expect(Buffer.isBuffer(buf)).toBeTruthy();
+                    done();
+                })
+                .catch((err) => {
+                    done(err);
+                });
         });
 
         it("Returns expected buffer", function(done) {
             var wcrypt = new Wcrypt.cipher(testOptions);
             wcrypt.rawDecrypt(mocks.pngCipher)
-            .then(function(buf) {
-                var hash1, hash2;
-                wcrypt.crypto.subtle.digest( { name: "SHA-256", },
-                    transcoder.buf2ab(buf))
-                .then(function(hash){
-                    hash1 = Buffer.from(hash).toString('hex');
-                    hash2 = mocks.pngHash;
-                    expect(hash1).toEqual(hash2);
-                    try {
-                        var dataURI = 'data:image/png;base64,' +
-                            buf.toString('base64');
-                        var img = document.createElement('img');
-                        console.log('Rendering decrypted image...');
-                        img.src = dataURI;
-                        img.title = 'Decrypted image';
-                        document.getElementsByTagName('body')[0]
-                            .appendChild(img);
-                    }
-                    catch (err) {}
-                    done();
+                .then(function(buf) {
+                    var hash1, hash2;
+                    wcrypt.crypto.subtle.digest( { name: "SHA-256", },
+                        transcoder.buf2ab(buf))
+                        .then(function(hash){
+                            hash1 = Buffer.from(hash).toString('hex');
+                            hash2 = mocks.pngHash;
+                            expect(hash1).toEqual(hash2);
+                            try {
+                                var dataURI = 'data:image/png;base64,' +
+                                    buf.toString('base64');
+                                var img = document.createElement('img');
+                                console.log('Rendering decrypted image...');
+                                img.src = dataURI;
+                                img.title = 'Decrypted image';
+                                document.getElementsByTagName('body')[0]
+                                    .appendChild(img);
+                            }
+                            catch (err) {}
+                            done();
+                        })
+                        .catch(function(err){
+                            done('Hash saved version: ' + err);
+                        });
                 })
-                .catch(function(err){
-                    done('Hash saved version: ' + err);
+                .catch(function (err) {
+                    done('Encrypt: ' + err);
                 });
-            })
-            .catch(function (err) {
-                done('Encrypt: ' + err);
-            });
         });
     });
 
@@ -222,14 +222,13 @@ describe("Decrypt", function() {
             it("Returns file signature", function(done) {
                 var wcrypt = new Wcrypt.cipher(mocks.passphrase);
                 wcrypt.decrypt(Buffer.from(variableWithHeader.hex, 'hex'))
-                .then((buf) => {
-                    expect(buf).toEqual(Buffer.from(variablePlain, 'utf8'));
-                    done();
-                })
-                .catch((err) => {
-                    done(err);
-                });
-
+                    .then((buf) => {
+                        expect(buf).toEqual(Buffer.from(variablePlain, 'utf8'));
+                        done();
+                    })
+                    .catch((err) => {
+                        done(err);
+                    });
             });
 
         });

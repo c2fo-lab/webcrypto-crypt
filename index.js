@@ -191,16 +191,16 @@ module.exports = WCRYPT = {
             }
             else {
                 return _importKey()
-                .catch((err) => {
-                    throw err;
-                })
-                .then((key) => {
-                    material.baseKey = key;
-                    return _deriveKey();
-                })
-                .catch((err) => {
-                    throw err;
-                });
+                    .catch((err) => {
+                        throw err;
+                    })
+                    .then((key) => {
+                        material.baseKey = key;
+                        return _deriveKey();
+                    })
+                    .catch((err) => {
+                        throw err;
+                    });
             }
         }
 
@@ -268,12 +268,12 @@ module.exports = WCRYPT = {
                 material.key,
                 transcoder.buf2ab(data)
             )
-            .then((result) => {
-                return transcoder.ab2buf(result);
-            })
-            .catch((err) => {
-                throw err;
-            });
+                .then((result) => {
+                    return transcoder.ab2buf(result);
+                })
+                .catch((err) => {
+                    throw err;
+                });
         }
 
         function _wEncrypt (data) {
@@ -287,12 +287,12 @@ module.exports = WCRYPT = {
                 material.key,
                 transcoder.buf2ab(data)
             )
-            .then((result) => {
-                return transcoder.ab2buf(result);
-            })
-            .catch((err) => {
-                throw err;
-            });
+                .then((result) => {
+                    return transcoder.ab2buf(result);
+                })
+                .catch((err) => {
+                    throw err;
+                });
         }
 
     },
