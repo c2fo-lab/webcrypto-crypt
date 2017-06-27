@@ -9,7 +9,7 @@ const Readable = require('stream').Readable,
     through2 = require('through2'),
     yargs = require('yargs');
 
-var isDebugging = false;
+Wcrypt.DEBUG = false;
 
 // Data piped to us
 if (!process.stdin.isTTY) {
@@ -30,7 +30,7 @@ if (!process.stdin.isTTY) {
         .argv;
 
     if (yargs.argv.debug)
-        isDebugging = true;
+        Wcrypt.DEBUG = true;
 
     var mode = 'encrypt';
     if (yargs.argv.decrypt) {
@@ -50,9 +50,7 @@ if (!process.stdin.isTTY) {
             material: {
                 passphrase: getPassphrase(mode)
             },
-            config: {
-                debug: isDebugging
-            }
+            config: {}
         });
         encryptStream(wcrypt, process.stdin, destination);
     }
@@ -91,7 +89,7 @@ else {
         .argv;
 
     if (yargs.argv.debug)
-        isDebugging = true;
+        Wcrypt.DEBUG = true;
 
     var mode = 'encrypt';
     if (yargs.argv.decrypt) {
@@ -130,9 +128,7 @@ else {
             material: {
                 passphrase: getPassphrase(mode)
             },
-            config: {
-                debug: isDebugging
-            }
+            config: {}
         });
         encryptStream(wcrypt, source, destination);
     }
@@ -145,7 +141,7 @@ function debug (msg) {
     var msg = Array.prototype.slice.call(arguments);
     msg.unshift('[debug] ');
     msg = msg.join(' ');
-    if (isDebugging)
+    if (Wcrypt.DEBUG)
         console.error(msg);
 }
 
@@ -179,7 +175,6 @@ function decryptStream(streamIn, streamOut) {
                 if (chunkCount === 1) {
                     debug('Reading header.');
                     var data = Wcrypt.parseHeader(chunk);
-                    data.config.debug = isDebugging;
                     data.material.passphrase = getPassphrase(mode);
                     wcrypt = new Wcrypt.cipher(data);
                     callback();

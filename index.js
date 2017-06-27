@@ -5,8 +5,8 @@ const Config = require('./lib/config.json'),
     transcoder = new Transcoder();
 
 global.Buffer = global.Buffer || Buffer;
-var WCRYPT;
-module.exports = WCRYPT = {
+var W;
+module.exports = W = {
 
     cipher: function (options) {
 
@@ -33,10 +33,10 @@ module.exports = WCRYPT = {
 
         _setConfig(options.config);
         _setMaterial(options.material);
-        _debug('Debugging enabled.');
+        W.debug('Debugging enabled.');
 
         wcrypt.createHeader = function () {
-            _debug('createHeader');
+            W.debug('createHeader');
             return Buffer.concat([
                 wcrypt.getSignature(),
                 Buffer.from(config.derive.iterations.toString(), 'utf8'),
@@ -47,20 +47,20 @@ module.exports = WCRYPT = {
             ]);
         };
         wcrypt.decrypt = function (data) {
-            _debug('decrypt');
+            W.debug('decrypt');
             return wcrypt.rawDecrypt(data, {assumeHeader: true});
         }
         wcrypt.delimiter = config.delimiter;
         wcrypt.encrypt = function (data) {
-            _debug('encrypt');
+            W.debug('encrypt');
             return wcrypt.rawEncrypt(data, {includeHeader: true});
         }
         wcrypt.encryptDelimited = function (data) {
-            _debug('encryptDelimited');
+            W.debug('encryptDelimited');
             return wcrypt.rawEncrypt(data, {appendDelimiter: true});
         }
         wcrypt.getDelimiter = function () {
-            _debug('getDelimiter', config.delimiter);
+            W.debug('getDelimiter', config.delimiter);
             return Buffer.from(config.delimiter);
         };
         wcrypt.getSignature = function () {
@@ -76,28 +76,20 @@ module.exports = WCRYPT = {
         ) };
         wcrypt.version = Package.version;
 
-        function _debug () {
-            var msg = Array.prototype.slice.call(arguments);
-            msg.unshift('[debug] ');
-            msg = msg.join(' ');
-            if (config.debug)
-                console.error(msg);
-        }
-
         function _decrypt (chunk, options) {
             options = options || {};
             var data;
             if (options.assumeHeader) {
-                var parsed = WCRYPT.parseHeader(chunk);
+                var parsed = W.parseHeader(chunk);
                 data = parsed.payload;
                 _setConfig(parsed.config);
                 _setMaterial(parsed.material);
-                _debug('_decrypt salt', Buffer.from(material.salt).toString('hex'));
+                W.debug('_decrypt salt', Buffer.from(material.salt).toString('hex'));
             }
             else {
                 data = chunk;
             }
-            _debug('_decrypt', JSON.stringify(options));
+            W.debug('_decrypt', JSON.stringify(options));
             return _getKey()
                 .then((key) => {
                     material.key = key;
@@ -115,7 +107,7 @@ module.exports = WCRYPT = {
         }
 
         function _deriveKey () {
-            _debug('_deriveKey salt', Buffer.from(material.salt).toString('hex'));
+            W.debug('_deriveKey salt', Buffer.from(material.salt).toString('hex'));
             return wcrypt.subtle.deriveKey(
                 {
                     name: config.derive.algorithm,
@@ -135,7 +127,7 @@ module.exports = WCRYPT = {
 
         function _encrypt (data, options) {
             options = options || {};
-            _debug('_encrypt', JSON.stringify(options));
+            W.debug('_encrypt', JSON.stringify(options));
             if (typeof data === 'string') {
                 data = Buffer.from(data, 'utf8');
             }
@@ -157,7 +149,7 @@ module.exports = WCRYPT = {
 
         function _encryptedBlock (data, options) {
             options = options || {};
-            _debug('_encryptedBlock', JSON.stringify(options));
+            W.debug('_encryptedBlock', JSON.stringify(options));
             if (options.appendDelimiter && !options.includeHeader) {
                 return Buffer.concat([
                     data,
@@ -183,7 +175,7 @@ module.exports = WCRYPT = {
         }
 
         function _getKey () {
-            _debug('_getKey');
+            W.debug('_getKey');
             if (material.key) {
                 return new Promise((resolve, reject) => {
                     resolve(material.key);
@@ -205,13 +197,13 @@ module.exports = WCRYPT = {
         }
 
         function _getRandomBytes (numBytes) {
-            _debug('_getRandomBytes', numBytes);
+            W.debug('_getRandomBytes', numBytes);
             var buf = new Uint8Array(numBytes);
             return wcrypt.crypto.getRandomValues(buf);
         }
 
         function _importKey () {
-            _debug('_importKey');
+            W.debug('_importKey');
             if (typeof material.passphrase !== 'string') {
                 return Promise.reject(config.err.passphrase);
             }
@@ -228,27 +220,25 @@ module.exports = WCRYPT = {
 
         function _setConfig (options) {
             options = options || {};
-            _debug('_setConfig options', JSON.stringify(options));
+            W.debug('_setConfig options', JSON.stringify(options));
             config.crypto.algorithm  = options.algorithm  || config.crypto.algorithm;
             config.crypto.keyUsages  = options.keyUsages  || config.crypto.usages;
             config.crypto.tagLength  = options.tagLength  || config.crypto.tagLength;
 
-            config.debug = options.debug || false;
-
             config.derive.algorithm  = options.derivation || config.derive.algorithm;
             config.derive.hash       = options.hash       || config.derive.hash;
             config.derive.iterations = options.iterations || config.derive.iterations;
-            _debug('_setConfig result', JSON.stringify(config));
+            W.debug('_setConfig result', JSON.stringify(config));
 
         };
 
         function _setMaterial (params) {
             params = params || {};
-            _debug('_setMaterial params', JSON.stringify(params));
+            W.debug('_setMaterial params', JSON.stringify(params));
             material.iv = params.iv   || material.iv || _getRandomBytes(12);
             material.passphrase = params.passphrase || material.passphrase;
             material.salt = params.salt || material.salt || _getRandomBytes(16);
-            _debug('_setMaterial result', JSON.stringify(material));
+            W.debug('_setMaterial result', JSON.stringify(material));
         }
 
         function _uriSafeBase64 (data) {
@@ -258,7 +248,7 @@ module.exports = WCRYPT = {
         }
 
         function _wDecrypt (data) {
-            _debug('_wDecrypt');
+            W.debug('_wDecrypt');
             return wcrypt.subtle.decrypt(
                 {
                     name: config.crypto.algorithm,
@@ -277,7 +267,7 @@ module.exports = WCRYPT = {
         }
 
         function _wEncrypt (data) {
-            _debug('_wEncrypt');
+            W.debug('_wEncrypt');
             return wcrypt.subtle.encrypt(
                 {
                     name: config.crypto.algorithm,
@@ -295,6 +285,14 @@ module.exports = WCRYPT = {
                 });
         }
 
+    },
+
+    debug: function () {
+        var msg = Array.prototype.slice.call(arguments);
+        msg.unshift('[debug] ');
+        msg = msg.join(' ');
+        if (W.DEBUG)
+            console.error(msg);
     },
 
     delimiter: Config.delimiter,
