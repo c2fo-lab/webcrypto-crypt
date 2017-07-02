@@ -1,3 +1,11 @@
+## 2017-07-02  Release 0.1.5
+
+Add helper lib for node streaming.
+Make cmdline utility use new helper lib.
+Move debug to class method.
+Add test to check debug is working.
+Fix indentation.
+
 ## 2017-06-04  Release 0.1.4
 
 Remove extraneous pkgs from package.json.

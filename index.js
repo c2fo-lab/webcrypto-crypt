@@ -64,7 +64,7 @@ module.exports = W = {
             return Buffer.from(config.delimiter);
         };
         wcrypt.getSignature = function () {
-            var signature = config.signaturePrefix + wcrypt.version;
+            var signature = config.signaturePrefix + W.version;
             return Buffer.from(signature);
         }
         wcrypt.name = Package.name;
@@ -74,7 +74,6 @@ module.exports = W = {
         wcrypt.uriSafeBase64 = function (data) { return transcoder.b642uri(
             transcoder.buf2b64(data)
         ) };
-        wcrypt.version = Package.version;
 
         function _decrypt (chunk, options) {
             options = options || {};
@@ -329,5 +328,7 @@ module.exports = W = {
           payload: data.slice(54)
         };
     },
+
+    version: Package.version
 
 };

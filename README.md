@@ -375,7 +375,8 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
 
 ### Audio file
 
-    λ curl -NSs "https://ia802509.us.archive.org/18/items/interview-with-neal-stephenson.JUcDkK.popuparchive.org/focus990527b.mp3" | wcrypt > ns-interview.wcrypt
+    λ export AUDIO_URL="https://ia802509.us.archive.org/18/items/interview-with-neal-stephenson.JUcDkK.popuparchive.org/focus990527b.mp3"
+    λ curl -NSs "$AUDIO_URL" | wcrypt > ns-interview.wcrypt
     Passphrase?
     Confirm passphrase:
     λ wcrypt -di ns-interview.wcrypt -o ns-interview.mp3
@@ -385,13 +386,10 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
 ### Audio stream
 
     λ export STREAM_URL="http://vprbbc.streamguys.net/vprbbc24-mobile.mp3"
-    λ curl -NSsm 10 "$STREAM_URL" | wcrypt -o stream-sample.wcrypt
+    λ curl -NSsm 10 "$STREAM_URL" | wcrypt | wcrypt -d | mpg123 -q -
     Passphrase?
     Confirm passphrase:
-    curl: (28) Operation timed out after 10001 milliseconds with 356694 bytes received
-    λ wcrypt -di stream-sample.wcrypt -o audio-sample.mp3
     Passphrase?
-    λ open audio-sample.mp3
 
 # Header structure
 

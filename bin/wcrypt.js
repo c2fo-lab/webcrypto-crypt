@@ -4,6 +4,7 @@ const Readable = require('stream').Readable,
     Wcrypt = require('../index.js'),
     crypto = require('crypto'),
     fs = require('fs'),
+    nodeStream = require('../lib/node-streams.js'),
     readlineSync = require('readline-sync'),
     split = require('binary-split'),
     through2 = require('through2'),
@@ -52,10 +53,13 @@ if (!process.stdin.isTTY) {
             },
             config: {}
         });
-        encryptStream(wcrypt, process.stdin, destination);
+
+        nodeStream.encrypt(wcrypt, process.stdin)
+            .pipe(destination);
     }
     else if (mode === 'decrypt') {
-        decryptStream(process.stdin, destination);
+        nodeStream.decrypt(getPassphrase, process.stdin)
+            .pipe(destination);
     }
 }
 
@@ -90,6 +94,11 @@ else {
 
     if (yargs.argv.debug)
         Wcrypt.DEBUG = true;
+
+    if (yargs.argv.version) {
+        console.log(Wcrypt.version);
+        process.exit();
+    }
 
     var mode = 'encrypt';
     if (yargs.argv.decrypt) {
@@ -130,10 +139,13 @@ else {
             },
             config: {}
         });
-        encryptStream(wcrypt, source, destination);
+
+        nodeStream.encrypt(wcrypt, source)
+            .pipe(destination);
     }
     else if (mode === 'decrypt') {
-        decryptStream(source, destination);
+        nodeStream.decrypt(getPassphrase, source)
+            .pipe(destination);
     }
 }
 
@@ -160,65 +172,14 @@ function defineCoreOptions (u) {
             describe: 'write debug info to stderr',
             boolean: true
         })
+        .option('version', {
+            alias: 'v',
+            default: 'false',
+            describe: 'display version and exit',
+            boolean: true
+        })
         .help('help')
         .alias('help', 'h');
-}
-
-function decryptStream(streamIn, streamOut) {
-    var chunkCount = 0,
-        wcrypt;
-    streamIn.pipe(split(Wcrypt.delimiter))
-    .pipe(
-        through2(
-            function (chunk, enc, callback) {
-                chunkCount++;
-                if (chunkCount === 1) {
-                    debug('Reading header.');
-                    var data = Wcrypt.parseHeader(chunk);
-                    data.material.passphrase = getPassphrase(mode);
-                    wcrypt = new Wcrypt.cipher(data);
-                    callback();
-                }
-                else {
-                    debug('Reading chunk ' + (chunkCount - 1) + '.');
-                    wcrypt.rawDecrypt(chunk)
-                    .then((data) => {
-                        this.push(data);
-                        callback();
-                    })
-                    .catch((err) => {
-                        callback(err);
-                    });
-                }
-            }
-        )
-    )
-    .pipe(streamOut);
-}
-
-function encryptStream(wcrypt, streamIn, streamOut) {
-        var chunkCount = 0;
-
-        debug('Writing header.');
-        streamOut.write(wcrypt.createHeader());
-
-        streamIn.pipe(
-            through2(
-                function (chunk, enc, callback) {
-                    chunkCount++;
-                    debug('Writing chunk ' + chunkCount + '.');
-                    wcrypt.encryptDelimited(chunk)
-                    .then((data) => {
-                        this.push(data);
-                        callback();
-                    })
-                    .catch((err) => {
-                        callback(err);
-                    });
-                }
-            )
-        )
-        .pipe(streamOut);
 }
 
 function getPassphrase(mode) {

@@ -244,7 +244,7 @@ describe("Encrypt", function() {
 
         it("Returns expected value", function(done) {
             var wcrypt = new Wcrypt.cipher(testOptions);
-            expect(wcrypt.version).toEqual(Package.version);
+            expect(Wcrypt.version).toEqual(Package.version);
             done();
         });
 
