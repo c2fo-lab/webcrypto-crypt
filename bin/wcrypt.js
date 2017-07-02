@@ -58,7 +58,8 @@ if (!process.stdin.isTTY) {
             .pipe(destination);
     }
     else if (mode === 'decrypt') {
-        decryptStream(process.stdin, destination);
+        nodeStream.decrypt(getPassphrase, process.stdin)
+            .pipe(destination);
     }
 }
 
@@ -143,7 +144,8 @@ else {
             .pipe(destination);
     }
     else if (mode === 'decrypt') {
-        decryptStream(source, destination);
+        nodeStream.decrypt(getPassphrase, source)
+            .pipe(destination);
     }
 }
 
@@ -178,38 +180,6 @@ function defineCoreOptions (u) {
         })
         .help('help')
         .alias('help', 'h');
-}
-
-function decryptStream(streamIn, streamOut) {
-    var chunkCount = 0,
-        wcrypt;
-    streamIn.pipe(split(Wcrypt.delimiter))
-    .pipe(
-        through2(
-            function (chunk, enc, callback) {
-                chunkCount++;
-                if (chunkCount === 1) {
-                    debug('Reading header.');
-                    var data = Wcrypt.parseHeader(chunk);
-                    data.material.passphrase = getPassphrase(mode);
-                    wcrypt = new Wcrypt.cipher(data);
-                    callback();
-                }
-                else {
-                    debug('Reading chunk ' + (chunkCount - 1) + '.');
-                    wcrypt.rawDecrypt(chunk)
-                    .then((data) => {
-                        this.push(data);
-                        callback();
-                    })
-                    .catch((err) => {
-                        callback(err);
-                    });
-                }
-            }
-        )
-    )
-    .pipe(streamOut);
 }
 
 function getPassphrase(mode) {
