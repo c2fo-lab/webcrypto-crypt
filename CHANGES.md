@@ -1,3 +1,10 @@
+## 2017-06-04  Release 0.1.5
+
+Add helper lib for node streaming.
+Add test to check debug is working.
+Move debug to class method.
+Fix indentation.
+
 ## 2017-06-04  Release 0.1.4
 
 Remove extraneous pkgs from package.json.
