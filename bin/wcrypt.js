@@ -91,6 +91,11 @@ else {
     if (yargs.argv.debug)
         Wcrypt.DEBUG = true;
 
+    if (yargs.argv.version) {
+        console.log(Wcrypt.version);
+        process.exit();
+    }
+
     var mode = 'encrypt';
     if (yargs.argv.decrypt) {
         debug('Setting mode to "decrypt".');
@@ -158,6 +163,12 @@ function defineCoreOptions (u) {
             alias: 'D',
             default: 'false',
             describe: 'write debug info to stderr',
+            boolean: true
+        })
+        .option('version', {
+            alias: 'v',
+            default: 'false',
+            describe: 'display version and exit',
             boolean: true
         })
         .help('help')
