@@ -24,8 +24,9 @@ describe("Encrypt stream", function() {
 
     it("Returns a readable stream", (done) => {
         var wcrypt = new Wcrypt.cipher(testOptions);
-        const readme = fs.createReadStream(__dirname + '/../LICENSE');
-        expect(isReadableStream(readme)).toExist();
+        const license = fs.createReadStream(__dirname + '/../LICENSE'),
+            licenseEncrypted = nodeStream.encrypt(wcrypt, license);
+        expect(isReadableStream(licenseEncrypted)).toExist();
         done();
     });
 

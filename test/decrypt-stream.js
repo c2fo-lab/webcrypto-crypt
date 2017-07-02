@@ -30,7 +30,8 @@ describe("Decrypt stream", function() {
         s._read = function noop() {};
         s.push(Buffer.from(data.license.hex, 'hex'));
         s.push(null);
-        expect(isReadableStream(s)).toExist();
+        let readableDecrypted = nodeStream.decrypt(mocks.passphrase, s);
+        expect(isReadableStream(readableDecrypted)).toExist();
         done();
     });
 
@@ -41,11 +42,11 @@ describe("Decrypt stream", function() {
         s._read = function noop() {};
         s.push(Buffer.from(data.license.hex, 'hex'));
         s.push(null);
-        let readableEncrypted = nodeStream.decrypt(s, mocks.passphrase);
-        readableEncrypted.on('data', (chunk) => {
+        let readableDecrypted = nodeStream.decrypt(mocks.passphrase, s);
+        readableDecrypted.on('data', (chunk) => {
             plaintext = plaintext + chunk.toString('utf8');
         });
-        readableEncrypted.on('finish', () => {
+        readableDecrypted.on('finish', () => {
             var licensePlaintext = fs.readFileSync(__dirname + '/../LICENSE');
             expect(plaintext).toEqual(licensePlaintext);
             done();
