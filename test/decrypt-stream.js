@@ -3,8 +3,10 @@ const Config = require('../lib/config.json'),
     fs = require('fs'),
     mocks = new (require('./mocks.js'))(),
     nodeStream = require('../lib/node-streams.js'),
-    stream = require('stream'),
     Package = require('../package.json'),
+    Readable = require('stream').Readable,
+    stream = require('stream'),
+    transcoder = new (require('../lib/transcoder.js'))(),
     Wcrypt = require('../index.js');
 
 const data = mocks.data,
@@ -20,25 +22,32 @@ function isReadableStream(obj) {
         typeof (obj._readableState === 'object');
 }
 
-describe("Encrypt stream", function() {
+describe("Decrypt stream", function() {
 
     it("Returns a readable stream", (done) => {
         var wcrypt = new Wcrypt.cipher(testOptions);
-        const readme = fs.createReadStream(__dirname + '/../LICENSE');
-        expect(isReadableStream(readme)).toExist();
+        var s = new Readable();
+        s._read = function noop() {};
+        s.push(Buffer.from(data.license.hex, 'hex'));
+        s.push(null);
+        expect(isReadableStream(s)).toExist();
         done();
     });
 
     it("Generates expected output", (done) => {
-        var hexEncoded = '',
+        var plaintext = '',
             wcrypt = new Wcrypt.cipher(testOptions);
-        const readme = fs.createReadStream(__dirname + '/../LICENSE');
-        let readableEncrypted = nodeStream.encrypt(wcrypt, readme);
+        var s = new Readable();
+        s._read = function noop() {};
+        s.push(Buffer.from(data.license.hex, 'hex'));
+        s.push(null);
+        let readableEncrypted = nodeStream.decrypt(s, mocks.passphrase);
         readableEncrypted.on('data', (chunk) => {
-            hexEncoded = hexEncoded + chunk.toString('hex');
+            plaintext = plaintext + chunk.toString('utf8');
         });
         readableEncrypted.on('finish', () => {
-            expect(hexEncoded).toEqual(data.license.hex);
+            var licensePlaintext = fs.readFileSync(__dirname + '/../LICENSE');
+            expect(plaintext).toEqual(licensePlaintext);
             done();
         });
     });
