@@ -112,6 +112,186 @@ describe("Encrypt", function() {
         });
     });
 
+    it("Accepts valid hash override", (done) => {
+        var options = {
+            config: {
+                derive: {
+                    hash: mocks.altHash
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done();
+        })
+        .catch((err) => {
+            done(err);
+        });
+    });
+
+    it("Rejects invalid hash override", (done) => {
+        var options = {
+            config: {
+                derive: {
+                    hash: mocks.altHashInvalid
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done('Invalid configuration accepted.');
+        })
+        .catch((err) => {
+            done();
+        });
+    });
+
+    it("Accepts valid iterations override", (done) => {
+        var options = {
+            config: {
+                derive: {
+                    iterations: mocks.altIter
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done();
+        })
+        .catch((err) => {
+            done(err);
+        });
+    });
+
+    it("Rejects invalid iterations override", (done) => {
+        var options = {
+            config: {
+                derive: {
+                    iterations: mocks.altIterInvalid
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done('Invalid configuration accepted.');
+        })
+        .catch((err) => {
+            done();
+        });
+    });
+
+    it("Accepts valid usages override", (done) => {
+        var options = {
+            config: {
+                crypto: {
+                    usages: mocks.altUsagesEncrypt
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done();
+        })
+        .catch((err) => {
+            done(err);
+        });
+    });
+
+    it("Rejects invalid usages override", (done) => {
+        var options = {
+            config: {
+                crypto: {
+                    usages: mocks.altUsagesEncryptInvalid
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done('Invalid configuration accepted.');
+        })
+        .catch((err) => {
+            done();
+        });
+    });
+
+    it("Accepts several valid overrides", (done) => {
+        var options = {
+            config: {
+                crypto: {
+                    tagLength: mocks.altTagLength,
+                    usages: mocks.altUsagesEncrypt
+                },
+                derive: {
+                    hash: mocks.altHash,
+                    iterations: mocks.altIter,
+                    length: mocks.altLength
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done();
+        })
+        .catch((err) => {
+            done(err);
+        });
+    });
+
+    it("Rejects several invalid overrides", (done) => {
+        var options = {
+            config: {
+                crypto: {
+                    tagLength: mocks.altTagLengthInvalid,
+                    usages: mocks.altUsagesEncryptInvalid
+                },
+                derive: {
+                    hash: mocks.altHashInvalid,
+                    iterations: mocks.altIterInvalid,
+                    length: mocks.altLengthInvalid
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done('Invalid configuration accepted.');
+        })
+        .catch((err) => {
+            done();
+        });
+    });
+
     describe("Fixed length UTF-8 string", () => {
 
         it("Fails with no passphrase", (done) => {

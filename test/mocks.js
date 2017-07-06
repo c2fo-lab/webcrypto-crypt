@@ -35,14 +35,22 @@ module.exports = function () {
         }
     }
 
-    mocks.data = data;
-    mocks.iv = transcoder.str2ab('123456789012');
+    mocks.altHash = 'SHA-256'
+    mocks.altHashInvalid = 'SHA-DOG'
+    mocks.altIter = 10000;
+    mocks.altIterInvalid = 'lorem ipsum';
     mocks.altLength = 128;
     mocks.altLengthInvalid = 999;
     mocks.altTagLength = 112;
     mocks.altTagLengthInvalid = 999;
-    mocks.salt = transcoder.str2ab('1234567890123456');
+    mocks.data = data;
+    mocks.iv = transcoder.str2ab('123456789012');
     mocks.passphrase = 'testSecret';
+    mocks.salt = transcoder.str2ab('1234567890123456');
+    mocks.altUsagesDecrypt = ['decrypt'];
+    mocks.altUsagesEncrypt = ['encrypt'];
+    mocks.altUsagesEncryptInvalid = ['decrypt'];
+    mocks.altUsagesDecryptInvalid = ['encrypt'];
 
     return mocks;
 };

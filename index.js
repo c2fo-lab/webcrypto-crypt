@@ -236,7 +236,6 @@ module.exports = W = {
                 overrides.derive = {};
 
             W.debug('_overrideConfig overrides', JSON.stringify(overrides));
-            config.crypto.algorithm  = overrides.crypto.algorithm  || config.crypto.algorithm;
             config.crypto.usages     = overrides.crypto.usages     || config.crypto.usages;
             config.crypto.tagLength  = overrides.crypto.tagLength  || config.crypto.tagLength;
             config.derive.algorithm  = overrides.derive.algorithm  || config.derive.algorithm;

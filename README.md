@@ -231,15 +231,14 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
     var wcrypt = new Wcrypt.cipher({
         config: {
             crypto: {
-                algorithm: myAlgorithm,      // default 'AES-GCM'
-                keyUsages: [myku1, myku2...],// default ['encrypt', 'decrypt']
+                usages: [myU1, myU2...],     // default ['encrypt', 'decrypt']
                 tagLength: myTagLength,      // default 128
             },
             delimiter: myDelimiter,          // default '<WcRyP+>'
             derive: {
-                algorithm: myDerivFunction,  // default 'PBKDF2'
                 hash: myHashFunction,        // default 'SHA-512'
                 iterations: myIterations,    // default 2000
+                length: myLength,            // default 128
             }
         },
         material: {
