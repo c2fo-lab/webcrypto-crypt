@@ -23,31 +23,23 @@ module.exports = W = {
 
         if (typeof options === 'string') {
             options = {
-                config: {
-                    crypto: {},
-                    derive: {},
-                },
+                config: {},
                 material: {
                     passphrase: options
                 }
             };
         }
         else if (Array.isArray(options) || typeof options === 'number') {
-            throw Error('Please pass in a passphrase or options object.');
+            throw Error('Please pass in a passphrase string or options object.');
         }
-        else {
-            if (!options.config)  {
-                options.config = {
-                    crypto: {},
-                    derive: {},
-                };
-            }
-            if (!options.material) {
-                options.material = {};
-            }
+        else if (!options.config) {
+            options.config = {};
+        }
+        else if (!options.material) {
+            options.material = {};
         }
 
-        _setConfig(options.config);
+        _overrideConfig(options.config);
         _setMaterial(options.material);
 
         W.debug('Debugging enabled.');
@@ -58,7 +50,7 @@ module.exports = W = {
                 wcrypt.getSignature(),
                 Buffer.from(config.derive.iterations.toString(), 'utf8'),
                 Buffer.from(config.crypto.tagLength.toString(), 'utf8'),
-                Buffer.from(material.length.toString(), 'utf8'),
+                Buffer.from(config.derive.length.toString(), 'utf8'),
                 transcoder.ab2buf(material.iv),
                 transcoder.ab2buf(material.salt),
                 wcrypt.getDelimiter()
@@ -99,7 +91,7 @@ module.exports = W = {
             if (options.assumeHeader) {
                 var parsed = W.parseHeader(chunk);
                 data = parsed.payload;
-                _setConfig(parsed.config);
+                _overrideConfig(parsed.config);
                 _setMaterial(parsed.material);
                 W.debug('_decrypt salt', Buffer.from(material.salt).toString('hex'));
             }
@@ -235,24 +227,30 @@ module.exports = W = {
             }
         }
 
-        function _setConfig (options) {
-            W.debug('_setConfig options', JSON.stringify(options));
-            config.crypto.algorithm  = options.crypto.algorithm  || config.crypto.algorithm;
-            config.crypto.usages     = options.crypto.usages     || config.crypto.usages;
-            config.crypto.tagLength  = options.crypto.tagLength  || config.crypto.tagLength;
+        function _overrideConfig (overrides) {
+            overrides = overrides || {};
 
-            config.derive.algorithm  = options.derive.algorithm  || config.derive.algorithm;
-            config.derive.hash       = options.derive.hash       || config.derive.hash;
-            config.derive.iterations = options.derive.iterations || config.derive.iterations;
-            W.debug('_setConfig result', JSON.stringify(config));
+            if (!overrides.crypto)
+                overrides.crypto = {};
+            if (!overrides.derive)
+                overrides.derive = {};
+
+            W.debug('_overrideConfig overrides', JSON.stringify(overrides));
+            config.crypto.algorithm  = overrides.crypto.algorithm  || config.crypto.algorithm;
+            config.crypto.usages     = overrides.crypto.usages     || config.crypto.usages;
+            config.crypto.tagLength  = overrides.crypto.tagLength  || config.crypto.tagLength;
+            config.derive.algorithm  = overrides.derive.algorithm  || config.derive.algorithm;
+            config.derive.hash       = overrides.derive.hash       || config.derive.hash;
+            config.derive.iterations = overrides.derive.iterations || config.derive.iterations;
+            config.derive.length     = overrides.derive.length     || config.derive.length;
+            W.debug('_overrideConfig result', JSON.stringify(config));
 
         };
 
         function _setMaterial (params) {
             params = params || {};
             W.debug('_setMaterial params', JSON.stringify(params));
-            material.iv = params.iv   || material.iv || _getRandomBytes(12);
-            material.length = params.length || config.derive.length;
+            material.iv = params.iv || material.iv || _getRandomBytes(12);
             material.passphrase = params.passphrase || material.passphrase;
             material.salt = params.salt || material.salt || _getRandomBytes(16);
             W.debug('_setMaterial result', JSON.stringify(material));
@@ -332,13 +330,13 @@ module.exports = W = {
              );
         }
 
-        // file signature = 0,10
+        // file signature        = 0,10
         config.derive.iterations = (data.slice(11,15)).toString('utf8');
-        config.crypto.tagLength = parseInt(data.slice(15,18).toString('utf8'));
-        material.length = parseInt(data.slice(18,21).toString('utf8'));
-        material.iv = transcoder.buf2ab(data.slice(21,33));
-        material.salt = transcoder.buf2ab(data.slice(33,49));
-        // 8-byte delimiter =  49,56
+        config.crypto.tagLength  = parseInt(data.slice(15,18).toString('utf8'));
+        config.derive.length     = parseInt(data.slice(18,21).toString('utf8'));
+        material.iv              = transcoder.buf2ab(data.slice(21,33));
+        material.salt            = transcoder.buf2ab(data.slice(33,49));
+        // 8-byte delimiter      =  49,56
         return {
           config: config,
           material: material,

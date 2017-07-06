@@ -36,10 +36,11 @@ module.exports = function () {
     }
 
     mocks.data = data;
-    mocks.algorithm = 'AES-GCM';
     mocks.iv = transcoder.str2ab('123456789012');
-    mocks.keyLength = 128;
-    mocks.tagLength = 128;
+    mocks.altLength = 128;
+    mocks.altLengthInvalid = 999;
+    mocks.altTagLength = 112;
+    mocks.altTagLengthInvalid = 999;
     mocks.salt = transcoder.str2ab('1234567890123456');
     mocks.passphrase = 'testSecret';
 

@@ -27,11 +27,19 @@ describe("Encrypt", function() {
             done();
         });
     });
-/**
-    it("Accepts valid config override", (done) => {
-        var configOverride = Object.assign({}, testOptions);
-        configOverride.config.crypto.tagLength = 112;
-        var wcrypt = new Wcrypt.cipher(configOverride);
+
+    it("Accepts valid tag length override", (done) => {
+        var options = {
+            config: {
+                crypto: {
+                    tagLength: mocks.altTagLength
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawEncrypt(fixedPlain)
         .then((data) => {
            done();
@@ -41,26 +49,69 @@ describe("Encrypt", function() {
         });
     });
 
-    it("Rejects invalid config override", (done) => {
-        var configOverride = Object.assign({}, testOptions);
-        if (!configOverride.config)
-            configOverride.config = { crypto: {}, derive: {}};
-        configOverride.config.crypto.tagLength = 1112;
-        var wcrypt = new Wcrypt.cipher(configOverride);
+    it("Rejects invalid tagLength override", (done) => {
+        var options = {
+            config: {
+                crypto: {
+                    tagLength: mocks.altTagLengthInvalid
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawEncrypt(fixedPlain)
         .then((data) => {
            done('Invalid configuration accepted.');
         })
         .catch((err) => {
-            if(err.message.match(
-                /Algorithm has got wrong value for paramter 'tagLength'./
-            ))
-                done();
-            else
-                done(err);
+            done();
         });
     });
-**/
+
+    it("Accepts valid length override", (done) => {
+        var options = {
+            config: {
+                derive: {
+                    length: mocks.altLength
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done();
+        })
+        .catch((err) => {
+            done(err);
+        });
+    });
+
+    it("Rejects invalid length override", (done) => {
+        var options = {
+            config: {
+                derive: {
+                    length: mocks.altLengthInvalid
+                }
+            },
+            material: {
+                passphrase: mocks.passphrase,
+            }
+        };
+        var wcrypt = new Wcrypt.cipher(options);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done('Invalid configuration accepted.');
+        })
+        .catch((err) => {
+            done();
+        });
+    });
+
     describe("Fixed length UTF-8 string", () => {
 
         it("Fails with no passphrase", (done) => {
