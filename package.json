@@ -5,7 +5,7 @@
     "url": "https://github.com/c2fo-lab/webcrypto-crypt.git"
   },
   "license": "MIT",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "C2FO Innovation Lab",
   "description": "Secret-key crypto with a passphrase running in node and the browser",
   "homepage": "https://c2folab.com",
@@ -30,9 +30,9 @@
   },
   "main": "index.js",
   "scripts": {
-    "clean": "rm -rf npm-debug.log ./dist ./examples/browser ./test/browser ./test/*.wcrypt package-lock.json",
+    "clean": "rm -rf npm-debug.log ./dist ./examples/browser ./test/browser ./test/*.wcrypt",
     "postinstall": "node ./bin/browserify.js",
-    "superclean": "rm -rf npm-debug.log ./dist ./examples/browser ./test/browser ./test/*.wcrypt ./node_modules",
+    "superclean": "rm -rf npm-debug.log ./dist ./examples/browser ./test/browser ./test/*.wcrypt ./node_modules package-lock.json",
     "test": "./node_modules/.bin/mocha --compilers js:babel-core/register --reporter spec"
   },
   "bin": {

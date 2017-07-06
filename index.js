@@ -41,6 +41,7 @@ module.exports = W = {
                 wcrypt.getSignature(),
                 Buffer.from(config.derive.iterations.toString(), 'utf8'),
                 Buffer.from(config.crypto.tagLength.toString(), 'utf8'),
+                Buffer.from(material.length.toString(), 'utf8'),
                 transcoder.ab2buf(material.iv),
                 transcoder.ab2buf(material.salt),
                 wcrypt.getDelimiter()
@@ -235,6 +236,7 @@ module.exports = W = {
             params = params || {};
             W.debug('_setMaterial params', JSON.stringify(params));
             material.iv = params.iv   || material.iv || _getRandomBytes(12);
+            material.length = params.length || config.derive.length;
             material.passphrase = params.passphrase || material.passphrase;
             material.salt = params.salt || material.salt || _getRandomBytes(16);
             W.debug('_setMaterial result', JSON.stringify(material));
@@ -302,7 +304,6 @@ module.exports = W = {
         var signature = (data.slice(0,11)).toString('utf8'),
             prefix = signature.substring(0,6),
             version = signature.substring(6,11);
-
         if (prefix != config.signaturePrefix) {
              throw new Error('Encrypted data not recognized by ' +
                  Package.name + ' (version ' + Package.version + ').');
@@ -318,14 +319,14 @@ module.exports = W = {
         // file signature = 0,10
         config.derive.iterations = (data.slice(11,15)).toString('utf8');
         config.crypto.tagLength = data.slice(15,18).toString('utf8');
-        material.iv = transcoder.buf2ab(data.slice(18,30));
-        material.salt = transcoder.buf2ab(data.slice(30,46));
-        // 8-byte delimiter =  46,53
-
+        material.length = data.slice(18,21).toString('utf8');
+        material.iv = transcoder.buf2ab(data.slice(21,33));
+        material.salt = transcoder.buf2ab(data.slice(33,49));
+        // 8-byte delimiter =  49,56
         return {
           config: config,
           material: material,
-          payload: data.slice(54)
+          payload: data.slice(57)
         };
     },
 
