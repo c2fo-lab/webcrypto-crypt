@@ -117,7 +117,7 @@ module.exports = W = {
                 material.baseKey,
                 {
                     name: config.crypto.algorithm,
-                    length: config.crypto.tagLength
+                    length: config.derive.length
                 },
                 true,
                 config.crypto.usages
