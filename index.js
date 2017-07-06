@@ -10,17 +10,7 @@ module.exports = W = {
 
     cipher: function (options) {
 
-        options = options || {};
-
-        if (typeof options === 'string') {
-            options = {
-                material: {
-                    passphrase: options
-                }
-            };
-        }
-
-        let config = JSON.parse(JSON.stringify(Config)),
+        var config = JSON.parse(JSON.stringify(Config)),
             material = {},
             wcrypt = this;
 
@@ -30,8 +20,36 @@ module.exports = W = {
         catch(err) {
             wcrypt.crypto = window.crypto || window.msCrypto;
         }
+
+        if (typeof options === 'string') {
+            options = {
+                config: {
+                    crypto: {},
+                    derive: {},
+                },
+                material: {
+                    passphrase: options
+                }
+            };
+        }
+        else if (Array.isArray(options) || typeof options === 'number') {
+            throw Error('Please pass in a passphrase or options object.');
+        }
+        else {
+            if (!options.config)  {
+                options.config = {
+                    crypto: {},
+                    derive: {},
+                };
+            }
+            if (!options.material) {
+                options.material = {};
+            }
+        }
+
         _setConfig(options.config);
         _setMaterial(options.material);
+
         W.debug('Debugging enabled.');
 
         wcrypt.createHeader = function () {
@@ -218,13 +236,9 @@ module.exports = W = {
         }
 
         function _setConfig (options) {
-            options = options || {
-                crypto: {},
-                derive: {}
-            };
             W.debug('_setConfig options', JSON.stringify(options));
             config.crypto.algorithm  = options.crypto.algorithm  || config.crypto.algorithm;
-            config.crypto.keyUsages  = options.crypto.usages     || config.crypto.usages;
+            config.crypto.usages     = options.crypto.usages     || config.crypto.usages;
             config.crypto.tagLength  = options.crypto.tagLength  || config.crypto.tagLength;
 
             config.derive.algorithm  = options.derive.algorithm  || config.derive.algorithm;
