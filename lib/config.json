@@ -4,10 +4,10 @@
         "usages": ["encrypt", "decrypt"],
         "tagLength": 128
     },
-    "debug": false,
     "derive": {
         "algorithm": "PBKDF2",
         "hash": "SHA-512",
+        "length": 128,
         "iterations": 2000
     },
     "delimiter": "<WcRyP+>",

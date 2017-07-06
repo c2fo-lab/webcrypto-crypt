@@ -4,6 +4,7 @@
   * [Examples](#examples)
   * [Test](#test)
   * [API](#api)
+  * [Processing node streams](#processing-node-streams)
   * [Command-line](#command-line)
   * [Header structure](#header-structure)
   * [Security](#security)
@@ -197,6 +198,10 @@ A file that should run the module tests in the browser is ```test/browser/wcrypt
 
 # API
 
+## Wcrypt.DEBUG = true | false
+
+If set to ```true```, send debugging statements to stderr.  Default ```false```.
+
 ## Wcrypt.parseHeader(Buffer data)
 
 Provided ```data``` is a valid webcrypto-wcrypt header, parse it and return an object with the following structure:
@@ -230,7 +235,6 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
                 keyUsages: [myku1, myku2...],// default ['encrypt', 'decrypt']
                 tagLength: myTagLength,      // default 128
             },
-            debug: myDebugBoolean,           // default false
             delimiter: myDelimiter,          // default '<WcRyP+>'
             derive: {
                 algorithm: myDerivFunction,  // default 'PBKDF2'
@@ -253,7 +257,7 @@ Return a ```Buffer``` filled with the appropriate seed data for encryption.  See
 
 ## wcrypt.decrypt(Buffer data)
 
-Decrypt ```data``` by first parsing its header section to extract ```configuration``` and ```material``` settings.  Note that the invoking ```wcrypt``` object will assume these extracted ```configuration``` and ```material``` settings for all its subsequent operations, unless subsequently overridden by reading in a different header.
+Decrypt ```data``` by first parsing its header section to extract ```config``` and ```material``` settings.  Note that the invoking ```wcrypt``` object will assume these extracted ```config``` and ```material``` settings for all its subsequent operations, unless subsequently overridden by reading in a different header.
 
 Returns a promise with its resolved value set to a Buffer of the decrypted data.
 
@@ -316,6 +320,47 @@ Convenience method for browser contexts to encode the passed-in ```data``` using
 ## wcrypt.version
 
 The current version of this library, e.g., ```0.1.2```.
+
+# Processing node streams
+
+In a node.js environment, ```webcrypto-crypt/lib/node-streams``` provides convenience methods for encrypting and decrypting [Readable Streams](https://nodejs.org/api/stream.html#stream_readable_streams).
+
+## Encrypt a readable stream
+
+When encrypting, you'll need to pass in your own ```wcrypt``` object:
+
+```javascript
+    const fs = require('fs'),
+        Wcrypt = require('webcrypto-crypt'),
+        wcrypt = new Wcrypt.cipher('testing123'),
+        nodeStream = require('webcrypto-crypt/lib/node-streams');
+
+        const license = fs.createReadStream('LICENSE'),
+            licenseEncrypted = fs.createWriteStream('LICENSE.wcrypt'),
+            readableEncrypted = nodeStream.encrypt(wcrypt, license);
+        readableEncrypted.on('data', (chunk) => {
+            licenseEncrypted.write(chunk);
+        });
+        readableEncrypted.on('end', () => {
+            console.error('wrote LICENSE.wcrypt');
+        });
+```
+
+## Decrypt a readable stream
+
+When decrypting, you'll need to pass in a passphrase so that an internal ```wcrypt``` object can then be derived based on the passphrase, plus the information found in stream's header:
+
+```javascript
+    const fs = require('fs'),
+        Wcrypt = require('webcrypto-crypt'),
+        nodeStream = require('webcrypto-crypt/lib/node-streams');
+
+        const licenseEncrypted = fs.createReadStream('LICENSE.wcrypt'),
+            readableDecrypted = nodeStream.decrypt('testing123', licenseEncrypted);
+        readableDecrypted.on('data', (chunk) => {
+            console.log(chunk.toString('utf8'));
+        });
+```
 
 # Command-line
 
