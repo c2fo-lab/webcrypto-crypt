@@ -30,7 +30,6 @@ module.exports = W = {
         catch(err) {
             wcrypt.crypto = window.crypto || window.msCrypto;
         }
-
         _setConfig(options.config);
         _setMaterial(options.material);
         W.debug('Debugging enabled.');
@@ -219,15 +218,18 @@ module.exports = W = {
         }
 
         function _setConfig (options) {
-            options = options || {};
+            options = options || {
+                crypto: {},
+                derive: {}
+            };
             W.debug('_setConfig options', JSON.stringify(options));
-            config.crypto.algorithm  = options.algorithm  || config.crypto.algorithm;
-            config.crypto.keyUsages  = options.keyUsages  || config.crypto.usages;
-            config.crypto.tagLength  = options.tagLength  || config.crypto.tagLength;
+            config.crypto.algorithm  = options.crypto.algorithm  || config.crypto.algorithm;
+            config.crypto.keyUsages  = options.crypto.usages     || config.crypto.usages;
+            config.crypto.tagLength  = options.crypto.tagLength  || config.crypto.tagLength;
 
-            config.derive.algorithm  = options.derivation || config.derive.algorithm;
-            config.derive.hash       = options.hash       || config.derive.hash;
-            config.derive.iterations = options.iterations || config.derive.iterations;
+            config.derive.algorithm  = options.derive.algorithm  || config.derive.algorithm;
+            config.derive.hash       = options.derive.hash       || config.derive.hash;
+            config.derive.iterations = options.derive.iterations || config.derive.iterations;
             W.debug('_setConfig result', JSON.stringify(config));
 
         };
@@ -318,8 +320,8 @@ module.exports = W = {
 
         // file signature = 0,10
         config.derive.iterations = (data.slice(11,15)).toString('utf8');
-        config.crypto.tagLength = data.slice(15,18).toString('utf8');
-        material.length = data.slice(18,21).toString('utf8');
+        config.crypto.tagLength = parseInt(data.slice(15,18).toString('utf8'));
+        material.length = parseInt(data.slice(18,21).toString('utf8'));
         material.iv = transcoder.buf2ab(data.slice(21,33));
         material.salt = transcoder.buf2ab(data.slice(33,49));
         // 8-byte delimiter =  49,56

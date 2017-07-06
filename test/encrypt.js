@@ -8,11 +8,13 @@ const Config = require('../lib/config.json'),
 const data = mocks.data,
     fixedCipher = data.fixed.encodings.ciphertext,
     fixedPlain = data.fixed.plaintext,
-    testOptions = {material: {
-        iv: mocks.iv,
-        passphrase: mocks.passphrase,
-        salt: mocks.salt
-    }},
+    testOptions = {
+        material: {
+            iv: mocks.iv,
+            passphrase: mocks.passphrase,
+            salt: mocks.salt
+        }
+    },
     variableCipher = data.variable.encodings.ciphertext,
     variablePlain = data.variable.plaintext;
 
@@ -23,6 +25,41 @@ describe("Encrypt", function() {
         wcrypt.rawEncrypt()
         .catch((err) => {
             done();
+        });
+    });
+
+    it("Accepts valid config override", (done) => {
+        var configOverride = Object.assign({}, testOptions);
+        if (!configOverride.config)
+            configOverride.config = { crypto: {}, derive: {}};
+        configOverride.config.crypto.tagLength = 112;
+        var wcrypt = new Wcrypt.cipher(configOverride);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done();
+        })
+        .catch((err) => {
+            done(err);
+        });
+    });
+
+    it("Rejects invalid config override", (done) => {
+        var configOverride = Object.assign({}, testOptions);
+        if (!configOverride.config)
+            configOverride.config = { crypto: {}, derive: {}};
+        configOverride.config.crypto.tagLength = 1112;
+        var wcrypt = new Wcrypt.cipher(configOverride);
+        wcrypt.rawEncrypt(fixedPlain)
+        .then((data) => {
+           done('Invalid configuration accepted.');
+        })
+        .catch((err) => {
+            if(err.message.match(
+                /Algorithm has got wrong value for paramter 'tagLength'./
+            ))
+                done();
+            else
+                done(err);
         });
     });
 
@@ -80,6 +117,7 @@ describe("Encrypt", function() {
                     done(err);
                 });
         });
+
     });
 
     describe("Variable length UTF-8 string", function() {
