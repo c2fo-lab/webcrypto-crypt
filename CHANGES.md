@@ -1,3 +1,9 @@
+## 2017-07-06  Release 0.1.6
+
+Remove algorithm choice from custom config options.
+Add derived key length config option.
+Fix facility for passing in custom config to constructor.
+
 ## 2017-07-02  Release 0.1.5
 
 Add helper lib for node streaming.
