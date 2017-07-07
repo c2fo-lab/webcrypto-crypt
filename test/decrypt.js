@@ -26,7 +26,7 @@ describe("Decrypt", function() {
         });
     });
 
-    it("Accepts valid tag length override", (done) => {
+    it("Accepts valid tagLength override", (done) => {
         var options = {
             config: {
                 crypto: {
@@ -48,7 +48,7 @@ describe("Decrypt", function() {
             done(err);
         });
     });
-/**
+
     it("Rejects invalid tagLength override", (done) => {
         var options = {
             config: {
@@ -86,7 +86,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltLength, 'hex'))
         .then((data) => {
            done();
         })
@@ -109,7 +109,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltLength, 'hex'))
         .then((data) => {
            done('Invalid configuration accepted.');
         })
@@ -132,7 +132,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltHash, 'hex'))
         .then((data) => {
            done();
         })
@@ -155,7 +155,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltHash, 'hex'))
         .then((data) => {
            done('Invalid configuration accepted.');
         })
@@ -178,7 +178,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltIter, 'hex'))
         .then((data) => {
            done();
         })
@@ -201,7 +201,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltIter, 'hex'))
         .then((data) => {
            done('Invalid configuration accepted.');
         })
@@ -214,7 +214,7 @@ describe("Decrypt", function() {
         var options = {
             config: {
                 crypto: {
-                    usages: mocks.altUsagesEncrypt
+                    usages: mocks.altUsagesDecrypt
                 }
             },
             material: {
@@ -224,7 +224,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltUsages, 'hex'))
         .then((data) => {
            done();
         })
@@ -237,7 +237,7 @@ describe("Decrypt", function() {
         var options = {
             config: {
                 crypto: {
-                    usages: mocks.altUsagesEncryptInvalid
+                    usages: mocks.altUsagesDecryptInvalid
                 }
             },
             material: {
@@ -247,7 +247,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltUsages, 'hex'))
         .then((data) => {
            done('Invalid configuration accepted.');
         })
@@ -261,7 +261,7 @@ describe("Decrypt", function() {
             config: {
                 crypto: {
                     tagLength: mocks.altTagLength,
-                    usages: mocks.altUsagesEncrypt
+                    usages: mocks.altUsagesDecrypt
                 },
                 derive: {
                     hash: mocks.altHash,
@@ -276,7 +276,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltSeveral, 'hex'))
         .then((data) => {
            done();
         })
@@ -290,7 +290,7 @@ describe("Decrypt", function() {
             config: {
                 crypto: {
                     tagLength: mocks.altTagLengthInvalid,
-                    usages: mocks.altUsagesEncryptInvalid
+                    usages: mocks.altUsagesDecryptInvalid
                 },
                 derive: {
                     hash: mocks.altHashInvalid,
@@ -305,7 +305,7 @@ describe("Decrypt", function() {
             }
         };
         var wcrypt = new Wcrypt.cipher(options);
-        wcrypt.rawDecrypt(fixedCipher)
+        wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltSeveral, 'hex'))
         .then((data) => {
            done('Invalid configuration accepted.');
         })
@@ -313,7 +313,7 @@ describe("Decrypt", function() {
             done();
         });
     });
-**/
+
     describe("Fixed length UTF-8 string", () => {
 
         it("Fails with no passphrase", (done) => {

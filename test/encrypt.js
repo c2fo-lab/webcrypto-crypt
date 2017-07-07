@@ -28,7 +28,7 @@ describe("Encrypt", function() {
         });
     });
 
-    it("Accepts valid tag length override", (done) => {
+    it("Accepts valid tagLength override", (done) => {
         var options = {
             config: {
                 crypto: {
