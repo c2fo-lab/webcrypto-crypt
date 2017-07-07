@@ -4,6 +4,7 @@
   * [Examples](#examples)
   * [Test](#test)
   * [API](#api)
+  * [Processing node streams](#processing-node-streams)
   * [Command-line](#command-line)
   * [Header structure](#header-structure)
   * [Security](#security)
@@ -180,12 +181,17 @@ Note that **webcrypto-crypt** injects [browserify](https://www.npmjs.com/package
 | **OS** | **Environment** | **Version** |
 | :-------- | :------- | :------- |
 | Mac Sierra | Firefox  | 53.0.3 (64-bit) |
+| Mac Sierra | Firefox  | 54.0.1 (64-bit) |
 | Mac Sierra | Chrome  | 58.0.3029.110 (64-bit) |
+| Mac Sierra | Chrome  | 59.0.3071.115 (64-bit) |
 | Mac Sierra | WebKit Nightly | Release 30 (Safari 10.2, WebKit 12604.1.22) |
+| Mac Sierra | WebKit Nightly | Release 34 (Safari 11.0, WebKit 12604.1.27.0.1) |
 | Mac Sierra | Node  | node v6.6.0 v8 5.1.281.83 |
 | Mac Sierra | Node  | node v7.9.0 v8 5.5.372.43 |
 | Mac Sierra | Node  | node v7.10.0 v8 5.5.372.43 |
 | Mac Sierra | Node  | node v8.0.0 v8 5.8.283.41 |
+| Mac Sierra | Node  | node v8.1.0 v8 5.8.283.41 |
+| Mac Sierra | Node  | node v8.1.3 v8 5.8.283.41 |
 
 ## Node.js
 
@@ -196,6 +202,10 @@ Note that **webcrypto-crypt** injects [browserify](https://www.npmjs.com/package
 A file that should run the module tests in the browser is ```test/browser/wcrypt-test.html```
 
 # API
+
+## Wcrypt.DEBUG = true | false
+
+If set to ```true```, send debugging statements to stderr.  Default ```false```.
 
 ## Wcrypt.parseHeader(Buffer data)
 
@@ -226,16 +236,14 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
     var wcrypt = new Wcrypt.cipher({
         config: {
             crypto: {
-                algorithm: myAlgorithm,      // default 'AES-GCM'
-                keyUsages: [myku1, myku2...],// default ['encrypt', 'decrypt']
+                usages: [myU1, myU2...],     // default ['encrypt', 'decrypt']
                 tagLength: myTagLength,      // default 128
             },
-            debug: myDebugBoolean,           // default false
             delimiter: myDelimiter,          // default '<WcRyP+>'
             derive: {
-                algorithm: myDerivFunction,  // default 'PBKDF2'
                 hash: myHashFunction,        // default 'SHA-512'
                 iterations: myIterations,    // default 2000
+                length: myLength,            // default 128
             }
         },
         material: {
@@ -253,7 +261,7 @@ Return a ```Buffer``` filled with the appropriate seed data for encryption.  See
 
 ## wcrypt.decrypt(Buffer data)
 
-Decrypt ```data``` by first parsing its header section to extract ```configuration``` and ```material``` settings.  Note that the invoking ```wcrypt``` object will assume these extracted ```configuration``` and ```material``` settings for all its subsequent operations, unless subsequently overridden by reading in a different header.
+Decrypt ```data``` by first parsing its header section to extract ```config``` and ```material``` settings.  Note that the invoking ```wcrypt``` object will assume these extracted ```config``` and ```material``` settings for all its subsequent operations, unless subsequently overridden by reading in a different header.
 
 Returns a promise with its resolved value set to a Buffer of the decrypted data.
 
@@ -316,6 +324,47 @@ Convenience method for browser contexts to encode the passed-in ```data``` using
 ## wcrypt.version
 
 The current version of this library, e.g., ```0.1.2```.
+
+# Processing node streams
+
+In a node.js environment, ```webcrypto-crypt/lib/node-streams``` provides convenience methods for encrypting and decrypting [Readable Streams](https://nodejs.org/api/stream.html#stream_readable_streams).
+
+## Encrypt a readable stream
+
+When encrypting, you'll need to pass in your own ```wcrypt``` object:
+
+```javascript
+    const fs = require('fs'),
+        Wcrypt = require('webcrypto-crypt'),
+        wcrypt = new Wcrypt.cipher('testing123'),
+        nodeStream = require('webcrypto-crypt/lib/node-streams');
+
+        const license = fs.createReadStream('LICENSE'),
+            licenseEncrypted = fs.createWriteStream('LICENSE.wcrypt'),
+            readableEncrypted = nodeStream.encrypt(wcrypt, license);
+        readableEncrypted.on('data', (chunk) => {
+            licenseEncrypted.write(chunk);
+        });
+        readableEncrypted.on('end', () => {
+            console.error('wrote LICENSE.wcrypt');
+        });
+```
+
+## Decrypt a readable stream
+
+When decrypting, you'll need to pass in a passphrase so that an internal ```wcrypt``` object can then be derived based on the passphrase, plus the information found in stream's header:
+
+```javascript
+    const fs = require('fs'),
+        Wcrypt = require('webcrypto-crypt'),
+        nodeStream = require('webcrypto-crypt/lib/node-streams');
+
+        const licenseEncrypted = fs.createReadStream('LICENSE.wcrypt'),
+            readableDecrypted = nodeStream.decrypt('testing123', licenseEncrypted);
+        readableDecrypted.on('data', (chunk) => {
+            console.log(chunk.toString('utf8'));
+        });
+```
 
 # Command-line
 
@@ -393,7 +442,7 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
 
 # Header structure
 
-See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L320-L325).
+See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L332-L338).
 
 # Security
 
