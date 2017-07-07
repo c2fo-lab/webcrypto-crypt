@@ -336,6 +336,7 @@ module.exports = W = {
         material.iv              = transcoder.buf2ab(data.slice(21,33));
         material.salt            = transcoder.buf2ab(data.slice(33,49));
         // 8-byte delimiter      =  49,56
+
         return {
           config: config,
           material: material,

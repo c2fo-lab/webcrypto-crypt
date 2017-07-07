@@ -437,7 +437,7 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
 
 # Header structure
 
-See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L318-L324).
+See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L332-L338).
 
 # Security
 
