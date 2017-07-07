@@ -4,17 +4,13 @@
         "usages": ["encrypt", "decrypt"],
         "tagLength": 128
     },
-    "debug": false,
     "derive": {
         "algorithm": "PBKDF2",
         "hash": "SHA-512",
+        "length": 128,
         "iterations": 2000
     },
     "delimiter": "<WcRyP+>",
-    "enc": {
-        "abf": "ab",  "b64": "b64", "buf": "buf",
-        "hex": "hex", "str": "str", "uri": "uri"
-    },
     "err": {
         "passphrase": "Incoming passphrase must be a string."
     },

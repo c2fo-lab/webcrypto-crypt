@@ -33,8 +33,8 @@ describe("Encrypt stream", function() {
     it("Generates expected output", (done) => {
         var hexEncoded = '',
             wcrypt = new Wcrypt.cipher(testOptions);
-        const readme = fs.createReadStream(__dirname + '/../LICENSE');
-        let readableEncrypted = nodeStream.encrypt(wcrypt, readme);
+        const license = fs.createReadStream(__dirname + '/../LICENSE');
+        let readableEncrypted = nodeStream.encrypt(wcrypt, license);
         readableEncrypted.on('data', (chunk) => {
             hexEncoded = hexEncoded + chunk.toString('hex');
         });
