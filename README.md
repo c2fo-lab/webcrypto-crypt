@@ -181,12 +181,17 @@ Note that **webcrypto-crypt** injects [browserify](https://www.npmjs.com/package
 | **OS** | **Environment** | **Version** |
 | :-------- | :------- | :------- |
 | Mac Sierra | Firefox  | 53.0.3 (64-bit) |
+| Mac Sierra | Firefox  | 54.0.1 (64-bit) |
 | Mac Sierra | Chrome  | 58.0.3029.110 (64-bit) |
+| Mac Sierra | Chrome  | 59.0.3071.115 (64-bit) |
 | Mac Sierra | WebKit Nightly | Release 30 (Safari 10.2, WebKit 12604.1.22) |
+| Mac Sierra | WebKit Nightly | Release 34 (Safari 11.0, WebKit 12604.1.27.0.1) |
 | Mac Sierra | Node  | node v6.6.0 v8 5.1.281.83 |
 | Mac Sierra | Node  | node v7.9.0 v8 5.5.372.43 |
 | Mac Sierra | Node  | node v7.10.0 v8 5.5.372.43 |
 | Mac Sierra | Node  | node v8.0.0 v8 5.8.283.41 |
+| Mac Sierra | Node  | node v8.1.0 v8 5.8.283.41 |
+| Mac Sierra | Node  | node v8.1.3 v8 5.8.283.41 |
 
 ## Node.js
 
