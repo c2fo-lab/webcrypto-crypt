@@ -39,8 +39,13 @@ describe("Encrypt stream", function() {
             hexEncoded = hexEncoded + chunk.toString('hex');
         });
         readableEncrypted.on('finish', () => {
-            expect(hexEncoded).toEqual(data.license.hex);
-            done();
+            try {
+                expect(hexEncoded).toEqual(data.license.hex);
+                done();
+            }
+            catch(err) {
+                done(err);
+            }
         });
     });
 

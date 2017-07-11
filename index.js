@@ -51,6 +51,7 @@ module.exports = W = {
                 Buffer.from(config.derive.iterations.toString(), 'utf8'),
                 Buffer.from(config.crypto.tagLength.toString(), 'utf8'),
                 Buffer.from(config.derive.length.toString(), 'utf8'),
+                Buffer.from(config.derive.hash.toString(), 'utf8'),
                 transcoder.ab2buf(material.iv),
                 transcoder.ab2buf(material.salt),
                 wcrypt.getDelimiter()
@@ -333,9 +334,10 @@ module.exports = W = {
         config.derive.iterations = (data.slice(11,15)).toString('utf8');
         config.crypto.tagLength  = parseInt(data.slice(15,18).toString('utf8'));
         config.derive.length     = parseInt(data.slice(18,21).toString('utf8'));
-        material.iv              = transcoder.buf2ab(data.slice(21,33));
-        material.salt            = transcoder.buf2ab(data.slice(33,49));
-        // 8-byte delimiter      =  49,56
+        config.derive.hash       = parseInt(data.slice(21,28).toString('utf8'));
+        material.iv              = transcoder.buf2ab(data.slice(28,40));
+        material.salt            = transcoder.buf2ab(data.slice(40,56));
+        // 8-byte delimiter      = 56,63
 
         return {
           config: config,

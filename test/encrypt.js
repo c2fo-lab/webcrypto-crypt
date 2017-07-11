@@ -301,13 +301,13 @@ describe("Encrypt", function() {
             }},
             wcrypt = new Wcrypt.cipher(options);
             wcrypt.rawEncrypt(fixedPlain)
-            .catch((err) => {
-                if (err.match(new RegExp(Config.err.passphrase))) {
-                    done();
-                }
-                else {
-                    done(err);
-                }
+                .catch((err) => {
+                    if (err.match(new RegExp(Config.err.passphrase))) {
+                        done();
+                    }
+                    else {
+                        done(err);
+                    }
             });
         });
 
