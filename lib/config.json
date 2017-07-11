@@ -12,6 +12,8 @@
     },
     "delimiter": "<WcRyP+>",
     "err": {
+        "chunkDecrypt": "Could not decrypt chunk- ",
+        "chunkEncrypt": "Could not encrypt chunk- ",
         "passphrase": "Incoming passphrase must be a string."
     },
     "signaturePrefix": "WCRYPT",
