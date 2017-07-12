@@ -8,13 +8,11 @@ const Config = require('../lib/config.json'),
 const data = mocks.data,
     fixedCipher = data.fixed.encodings.ciphertext,
     fixedPlain = data.fixed.plaintext,
-    testOptions = {
-        material: {
-            iv: mocks.iv,
-            passphrase: mocks.passphrase,
-            salt: mocks.salt
-        }
-    },
+    testOptions = {material: {
+        iv: mocks.iv,
+        passphrase: mocks.passphrase,
+        salt: mocks.salt
+    }},
     variableCipher = data.variable.encodings.ciphertext,
     variablePlain = data.variable.plaintext;
 

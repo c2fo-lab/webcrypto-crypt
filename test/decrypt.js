@@ -515,7 +515,6 @@ describe("Decrypt", function() {
                         done();
                     })
                     .catch((err) => {
-                      console.log(err);
                         done(err);
                     });
             });
