@@ -1,3 +1,10 @@
+## 2017-07-12  Release 0.1.7
+
+Add PBKDF2 hash to file header.
+Add missing catch clause to node-stream.
+Catch errors in pipe() when streaming data.
+Fix indentation.
+
 ## 2017-07-06  Release 0.1.6
 
 Remove algorithm choice from custom config options.
