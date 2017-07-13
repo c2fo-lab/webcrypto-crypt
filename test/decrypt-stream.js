@@ -48,8 +48,16 @@ describe("Decrypt stream", function() {
         });
         readableDecrypted.on('finish', () => {
             var licensePlaintext = fs.readFileSync(__dirname + '/../LICENSE');
-            expect(plaintext).toEqual(licensePlaintext);
-            done();
+            try {
+                expect(plaintext).toEqual(licensePlaintext);
+                done();
+            }
+            catch (err) {
+                console.error(err.message);
+            }
+        });
+        readableDecrypted.on('error', (err) => {
+            done(err);
         });
     });
 
