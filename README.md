@@ -180,18 +180,10 @@ Note that **webcrypto-crypt** injects [browserify](https://www.npmjs.com/package
 
 | **OS** | **Environment** | **Version** |
 | :-------- | :------- | :------- |
-| Mac Sierra | Firefox  | 53.0.3 (64-bit) |
-| Mac Sierra | Firefox  | 54.0.1 (64-bit) |
-| Mac Sierra | Chrome  | 58.0.3029.110 (64-bit) |
 | Mac Sierra | Chrome  | 59.0.3071.115 (64-bit) |
-| Mac Sierra | WebKit Nightly | Release 30 (Safari 10.2, WebKit 12604.1.22) |
+| Mac Sierra | Firefox  | 54.0.1 (64-bit) |
+| Mac Sierra | Node  | node v8.1.4 v8 5.8.283.41 |
 | Mac Sierra | WebKit Nightly | Release 34 (Safari 11.0, WebKit 12604.1.27.0.1) |
-| Mac Sierra | Node  | node v6.6.0 v8 5.1.281.83 |
-| Mac Sierra | Node  | node v7.9.0 v8 5.5.372.43 |
-| Mac Sierra | Node  | node v7.10.0 v8 5.5.372.43 |
-| Mac Sierra | Node  | node v8.0.0 v8 5.8.283.41 |
-| Mac Sierra | Node  | node v8.1.0 v8 5.8.283.41 |
-| Mac Sierra | Node  | node v8.1.3 v8 5.8.283.41 |
 
 ## Node.js
 
@@ -230,7 +222,7 @@ Provided ```data``` is a valid webcrypto-wcrypt header, parse it and return an o
 
 ## new Wcrypt.cipher(String passphrase || Object options)
 
-Instantiate a webcrypto-crypt object using just a passphrase or more options beyond the passphrase.  When passing in an object, the minimum specification looks like ```{material: { passphrase: <your passphrase> } }```.  All the possible options are described below:
+Instantiate a webcrypto-crypt object using just a passphrase or more options beyond the passphrase.  When passing in an object, the minimum specification looks like ```{material: { passphrase: <your passphrase> } }```.  All the possible options are described below and note that if you do choose to employ custom ``tagLength``, ```hash```, ```iterations```, or ```length``` attributes that a similarly customized object will later be needed to decrypt the resulting data:
 
 ```javascript
     var wcrypt = new Wcrypt.cipher({
@@ -442,7 +434,7 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
 
 # Header structure
 
-See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L332-L338).
+See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L333-L340).
 
 # Security
 
@@ -454,6 +446,9 @@ Keyserver: pgp.mit.edu<br>
 
 * [ccrypt](http://ccrypt.sourceforge.net/)
 * [introduction to cryptography](https://www.nrc.gov/site-help/e-submittals/intro-crypt.html)
-* [node-aes-gcm](https://github.com/xorbit/node-aes-gcm)
-* [node-crypto-gcm](https://github.com/mingchen/node-crypto-gcm)
 * [webcrypto-examples](https://github.com/diafygi/webcrypto-examples)
+
+# To do
+* Promisify mocha tests
+* Improve stream handling
+* Add key usage permissions to encryption header
