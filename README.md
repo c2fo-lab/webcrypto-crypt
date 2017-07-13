@@ -417,7 +417,7 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
 ### Audio file
 
     λ export AUDIO_URL="https://ia802509.us.archive.org/18/items/interview-with-neal-stephenson.JUcDkK.popuparchive.org/focus990527b.mp3"
-    λ curl -NSs "$AUDIO_URL" | wcrypt > ns-interview.wcrypt
+    λ curl -NSs "$AUDIO_URL" | wcrypt > ns-interview.wcrypta # may take a few minutes...
     Passphrase?
     Confirm passphrase:
     λ wcrypt -di ns-interview.wcrypt -o ns-interview.mp3
@@ -451,4 +451,4 @@ Keyserver: pgp.mit.edu<br>
 # To do
 * Promisify mocha tests
 * Improve stream handling
-* Add key usage permissions to encryption header
+* Add key usage permissions to file header
