@@ -41,12 +41,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltTagLength, 'hex'))
-        .then((data) => {
-           done();
-        })
-        .catch((err) => {
-            done(err);
-        });
+            .then((data) => {
+                done();
+            })
+            .catch((err) => {
+                done(err);
+            });
     });
 
     it("Rejects invalid tagLength override", (done) => {
@@ -64,12 +64,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltTagLength, 'hex'))
-        .then((data) => {
-           done('Invalid configuration accepted.');
-        })
-        .catch((err) => {
-            done();
-        });
+            .then((data) => {
+                done('Invalid configuration accepted.');
+            })
+            .catch((err) => {
+                done();
+            });
     });
 
     it("Accepts valid length override", (done) => {
@@ -87,12 +87,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltLength, 'hex'))
-        .then((data) => {
-           done();
-        })
-        .catch((err) => {
-            done(err);
-        });
+            .then((data) => {
+                done();
+            })
+            .catch((err) => {
+                done(err);
+            });
     });
 
     it("Rejects invalid length override", (done) => {
@@ -110,12 +110,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltLength, 'hex'))
-        .then((data) => {
-           done('Invalid configuration accepted.');
-        })
-        .catch((err) => {
-            done();
-        });
+            .then((data) => {
+                done('Invalid configuration accepted.');
+            })
+            .catch((err) => {
+                done();
+            });
     });
 
     it("Accepts valid hash override", (done) => {
@@ -133,12 +133,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltHash, 'hex'))
-        .then((data) => {
-           done();
-        })
-        .catch((err) => {
-            done(err);
-        });
+            .then((data) => {
+                done();
+            })
+            .catch((err) => {
+                done(err);
+            });
     });
 
     it("Rejects invalid hash override", (done) => {
@@ -156,12 +156,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltHash, 'hex'))
-        .then((data) => {
-           done('Invalid configuration accepted.');
-        })
-        .catch((err) => {
-            done();
-        });
+            .then((data) => {
+                done('Invalid configuration accepted.');
+            })
+            .catch((err) => {
+                done();
+            });
     });
 
     it("Accepts valid iterations override", (done) => {
@@ -179,12 +179,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltIter, 'hex'))
-        .then((data) => {
-           done();
-        })
-        .catch((err) => {
-            done(err);
-        });
+            .then((data) => {
+                done();
+            })
+            .catch((err) => {
+                done(err);
+            });
     });
 
     it("Rejects invalid iterations override", (done) => {
@@ -202,12 +202,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltIter, 'hex'))
-        .then((data) => {
-           done('Invalid configuration accepted.');
-        })
-        .catch((err) => {
-            done();
-        });
+            .then((data) => {
+                done('Invalid configuration accepted.');
+            })
+            .catch((err) => {
+                done();
+            });
     });
 
     it("Accepts valid usages override", (done) => {
@@ -225,12 +225,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltUsages, 'hex'))
-        .then((data) => {
-           done();
-        })
-        .catch((err) => {
-            done(err);
-        });
+            .then((data) => {
+                done();
+            })
+            .catch((err) => {
+                done(err);
+            });
     });
 
     it("Rejects invalid usages override", (done) => {
@@ -248,12 +248,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltUsages, 'hex'))
-        .then((data) => {
-           done('Invalid configuration accepted.');
-        })
-        .catch((err) => {
-            done();
-        });
+            .then((data) => {
+                done('Invalid configuration accepted.');
+            })
+            .catch((err) => {
+                done();
+            });
     });
 
     it("Accepts several valid overrides", (done) => {
@@ -277,12 +277,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltSeveral, 'hex'))
-        .then((data) => {
-           done();
-        })
-        .catch((err) => {
-            done(err);
-        });
+            .then((data) => {
+                done();
+            })
+            .catch((err) => {
+                done(err);
+            });
     });
 
     it("Rejects several invalid overrides", (done) => {
@@ -306,12 +306,12 @@ describe("Decrypt", function() {
         };
         var wcrypt = new Wcrypt.cipher(options);
         wcrypt.rawDecrypt(Buffer.from(fixedCipher.hexAltSeveral, 'hex'))
-        .then((data) => {
-           done('Invalid configuration accepted.');
-        })
-        .catch((err) => {
-            done();
-        });
+            .then((data) => {
+                done('Invalid configuration accepted.');
+            })
+            .catch((err) => {
+                done();
+            });
     });
 
     describe("Fixed length UTF-8 string", () => {
