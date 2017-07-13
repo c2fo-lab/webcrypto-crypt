@@ -1,3 +1,7 @@
+## 2017-07-13  Release 0.1.8
+
+Add missing signature to SIGNED.txt.
+
 ## 2017-07-13  Release 0.1.7
 
 Add PBKDF2 hash to file header.
