@@ -472,12 +472,13 @@ describe("Encrypt", function() {
     describe("Variants", function() {
 
         describe("encrypt", function() {
+
             it("Returns file signature", function(done) {
                 var wcrypt = new Wcrypt.cipher(testOptions);
                 wcrypt.encrypt(variablePlain)
                     .then((buf) => {
-                        expect(buf.slice(0,11)).toEqual(
-                            Buffer.from(wcrypt.getSignature())
+                        expect(buf.slice(0,14)).toEqual(
+                            Buffer.from(Wcrypt.getSignature())
                         );
                         done();
                     })

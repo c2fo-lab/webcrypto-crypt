@@ -195,9 +195,9 @@ A file that should run the module tests in the browser is ```test/browser/wcrypt
 
 # API
 
-## Wcrypt.DEBUG = true | false
+## Wcrypt.getSignature()
 
-If set to ```true```, send debugging statements to stderr.  Default ```false```.
+Return the current file signature in use by this library as a ```Buffer```.
 
 ## Wcrypt.parseHeader(Buffer data)
 
@@ -219,6 +219,14 @@ Provided ```data``` is a valid webcrypto-wcrypt header, parse it and return an o
         }
     }
 ```
+
+## Wcrypt.setHeader(Object config)
+
+Not intended for general use; applies this configuration object to the current file header definition.
+
+## Wcrypt.DEBUG = true | false
+
+If set to ```true```, send debugging statements to stderr.  Default ```false```.
 
 ## new Wcrypt.cipher(String passphrase || Object options)
 
@@ -249,7 +257,7 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
 
 ## wcrypt.createHeader()
 
-Return a ```Buffer``` filled with the appropriate seed data for encryption.  See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L320-L325).
+Return a ```Buffer``` filled with the appropriate seed data for encryption.  See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L341-L354).
 
 ## wcrypt.decrypt(Buffer data)
 
@@ -277,10 +285,6 @@ Returns a promise with its resolved value set to a Buffer of the encrypted data.
 
 Return the delimiter webcrypto-crypt is currently configured to use as a ```Buffer```.
 
-## wcrypt.getSignature()
-
-Return the current file signature in use by this library as a ```Buffer```.
-
 ## wcrypt.name
 
 The current name of this library, e.g., ```webcrypto-crypt```.
@@ -303,7 +307,7 @@ Will append the ```wcrypt.delimiter``` to the end of the encrypted data before r
 
     wcrypt.rawEncrypt('Some text to encrypt', {includeHeader: true});
 
-Will append a cleartext header to the returned data including: ```initialization vector```, ```iterations```, ```salt```, and ```tagLength``` used in the encryption.  See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L320-L325).
+Will append a cleartext header to the returned data including: ```initialization vector```, ```iterations```, ```salt```, and ```tagLength``` used in the encryption.  See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L341-L354).
 
 ## wcrypt.subtle
 
@@ -434,7 +438,7 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
 
 # Header structure
 
-See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L333-L340).
+See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L341-L354).
 
 # Security
 

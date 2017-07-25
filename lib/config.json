@@ -1,6 +1,7 @@
 {
     "crypto": {
         "algorithm": "AES-GCM",
+        "ivLength": 12,
         "usages": ["encrypt", "decrypt"],
         "tagLength": 128
     },
@@ -8,7 +9,8 @@
         "algorithm": "PBKDF2",
         "hash": "SHA-512",
         "length": 128,
-        "iterations": 2000
+        "iterations": 2000,
+        "saltLength": 16
     },
     "delimiter": "<WcRyP+>",
     "err": {

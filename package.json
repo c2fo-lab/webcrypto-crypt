@@ -5,7 +5,7 @@
     "url": "https://github.com/c2fo-lab/webcrypto-crypt.git"
   },
   "license": "MIT",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "author": "C2FO Innovation Lab",
   "description": "Secret-key crypto with a passphrase running in node and the browser",
   "homepage": "https://c2folab.com",

@@ -1,13 +1,10 @@
 #!/bin/sh
 ':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
 const Readable = require('stream').Readable,
-    Wcrypt = require('../index.js'),
-    crypto = require('crypto'),
     fs = require('fs'),
-    nodeStream = require('../lib/node-streams.js'),
     readlineSync = require('readline-sync'),
-    split = require('binary-split'),
-    through2 = require('through2'),
+    Wcrypt = require('../index.js'),
+    wcryptStream = require('../lib/node-streams.js'),
     yargs = require('yargs');
 
 Wcrypt.DEBUG = false;
@@ -15,7 +12,7 @@ Wcrypt.DEBUG = false;
 // Data piped to us
 if (!process.stdin.isTTY) {
 
-    defineCoreOptions(yargs.usage('Usage: data | $0 [options]'))
+    baseOptions(yargs.usage('Usage: data | $0 [options]'))
         .option('outfile', {
             alias: 'o',
             describe: 'write data to this file',
@@ -54,11 +51,11 @@ if (!process.stdin.isTTY) {
             config: {}
         });
 
-        nodeStream.encrypt(wcrypt, process.stdin)
+        wcryptStream.encrypt(wcrypt, process.stdin)
             .pipe(destination);
     }
     else if (mode === 'decrypt') {
-        nodeStream.decrypt(getPassphrase, process.stdin)
+        wcryptStream.decrypt(getPassphrase, process.stdin)
             .pipe(destination);
     }
 }
@@ -66,7 +63,7 @@ if (!process.stdin.isTTY) {
 // Data from file or command line
 else {
 
-    defineCoreOptions(yargs.usage('Usage: $0 [options]'))
+    baseOptions(yargs.usage('Usage: $0 [options]'))
         .option('outfile', {
             alias: 'o',
             describe: 'write data to this file',
@@ -140,11 +137,11 @@ else {
             config: {}
         });
 
-        nodeStream.encrypt(wcrypt, source)
+        wcryptStream.encrypt(wcrypt, source)
             .pipe(destination);
     }
     else if (mode === 'decrypt') {
-        nodeStream.decrypt(getPassphrase, source)
+        wcryptStream.decrypt(getPassphrase, source)
             .pipe(destination);
     }
 }
@@ -157,7 +154,7 @@ function debug (msg) {
         console.error(msg);
 }
 
-function defineCoreOptions (u) {
+function baseOptions (u) {
     u["$0"] = 'wcrypt';
     return u 
         .option('decrypt', {

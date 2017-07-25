@@ -1,3 +1,11 @@
+## 2017-07-25  Release 0.1.10
+
+Make header definition dynamic based on config.
+Add setHeader() class method.
+Make getSignature() a class method.
+Change file header to handle larger version numbers.
+Remove extraneous pkg deps from wcrypt.js.
+
 ## 2017-07-13  Release 0.1.9
 
 Update test data for previously failing test.
