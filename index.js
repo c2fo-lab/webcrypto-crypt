@@ -327,7 +327,7 @@ module.exports = exports = {
             version = signature.substring(exports.head.pref, exports.head.sig.e);
 
         if (prefix != config.signaturePrefix) {
-             throw new Error('Encrypted data not recognized by ' +
+             throw new Error('Data not recognized by ' +
                  Package.name + ' (version ' + Package.version + ').');
         }
 

@@ -16,6 +16,7 @@
     "err": {
         "chunkDecrypt": "Could not decrypt chunk- ",
         "chunkEncrypt": "Could not encrypt chunk- ",
+        "fileDecrypt": "Could not decrypt file- ",
         "passphrase": "Incoming passphrase must be a string."
     },
     "signaturePrefix": "WCRYPT",
