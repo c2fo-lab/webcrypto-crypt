@@ -326,17 +326,12 @@ module.exports = exports = {
             prefix = signature.substring(0, exports.head.pref),
             version = signature.substring(exports.head.pref, exports.head.sig.e);
 
-        if (prefix != config.signaturePrefix) {
-             throw new Error('Data not recognized by ' +
-                 Package.name + ' (version ' + Package.version + ').');
-        }
-
-        else if (parseInt(version) > parseInt(Package.version)) {
-             console.error('Data encrypted with a later version of ' + Package.name + 
-                 ' (' + version + '). Assuming backward-compatibility with ' +
-                 'current version: ' + Package.version + '.'
-             );
-        }
+        if (prefix != config.signaturePrefix)
+             throw new Error(Config.err.sigInvalid + Package.name + Package.version);
+        else if (parseInt(version) > parseInt(Package.version))
+             console.error(Config.err.encryptOld + Package.name);
+        else if (parseInt(version) < parseInt(Package.version))
+             console.error(Config.err.encryptNew + Package.name);
 
         //00  01  02  03  04  05  06  07  08  09  10  11  12  13  14  16  17  18
         // W   C   R   Y   P   T   m   v   .   m   v   .   p   v   2   0   0   0
