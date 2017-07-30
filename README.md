@@ -436,6 +436,10 @@ Note also that you may set the environment variable **WCRYPT_PASS** to have **wc
     Confirm passphrase:
     Passphrase?
 
+### .wcryptpass
+
+If no passphrase is specified, ```wcrypt``` will consult the environment variable ```WCRYPT_PASSFILE``` and try to use its contents as the path to a file containing the passphrase.  If ```WCRYPT_PASSFILE``` is not defined, ```wcrypt``` will check for a ```.wcryptpass``` file in the user's home directory for the same purpose.  In either case, on Unix systems the permissions of this file need to disallow access to world or group, achievable with, e.g., ```chmod 0600 ~/.wcryptpass```. If the permissions are less strict, the file will be ignored.
+
 # Header structure
 
 See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L341-L354).

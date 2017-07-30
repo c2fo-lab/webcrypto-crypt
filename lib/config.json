@@ -19,7 +19,8 @@
         "encryptNew": "Data encrypted with an earlier version of ",
         "encryptOld": "Data encrypted with a later version of ",
         "fileDecrypt": "Could not decrypt file- ",
-        "passphrase": "Incoming passphrase must be a string.",
+        "passString": "Incoming passphrase must be a string.",
+        "passReq": "Please pass in a passphrase string or options object.",
         "sigInvalid": "Invalid file signature "
     },
     "signaturePrefix": "WCRYPT",

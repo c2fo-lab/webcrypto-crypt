@@ -1,8 +1,14 @@
 #!/bin/sh
 ':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
+
 const Readable = require('stream').Readable,
+    chop = require('chop'),
     fs = require('fs'),
+    os = require('os'),
+    homePassFile = os.homedir() + '/.wcryptpass',
     readlineSync = require('readline-sync'),
+    util = require('util'),
+    statFile = util.promisify(fs.stat),
     Wcrypt = require('../index.js'),
     wcryptStream = require('../lib/node-streams.js'),
     yargs = require('yargs');
@@ -179,9 +185,13 @@ function baseOptions (u) {
         .alias('help', 'h');
 }
 
+function getDataFromPrompt() {
+    return readlineSync.question('Data to encrypt: ');
+}
+
 function getPassphrase(mode) {
-    if (process.env.WCRYPT_PASS) {
-        return process.env.WCRYPT_PASS;
+    if (process.env.WCRYPT_PASSFILE) {
+        return process.env.WCRYPT_PASSFILE;
     }
     else {
         var passphrase = readlineSync.question('Passphrase? ', {
@@ -201,6 +211,37 @@ function getPassphrase(mode) {
     }
 }
 
-function getDataFromPrompt() {
-    return readlineSync.question('Data to encrypt: ');
+/**
+getPassphraseFromFile()
+    .then(p => {
+        process.stdout.write('"' + p + '"');
+    })
+    .catch(err => {
+        console.error(err);
+    });
+**/
+function getPassphraseFromFile() {
+    const passPath = process.env.WCRYPT_PASSFILE || homePassFile;
+    return statFile(passPath)
+        .then(stats => {
+            if (parseInt(stats.mode) === 33152) {
+                return readFile(passPath)
+                    .then(data => {
+                        return chop.chomp(data.toString('utf8'));
+                    })
+                    .catch(err => {
+                        if (!err.code === 'ENOENT') {
+                            console.error(err);
+                        }
+                    });
+            }
+            else {
+                return new Error('File permissions are insecure.');
+            }
+        })
+        .catch(err => {
+            if (!err.code === 'ENOENT') {
+                console.error(err);
+            }
+        });
 }
