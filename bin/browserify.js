@@ -27,7 +27,6 @@ async.series([
     function(callback) {
         var folders = [distFolder, exampleFolderBrowser, testFolderBrowser];
         for (var f=0; f < folders.length; f++) {
-            console.log('Creating ' + folders[f]);
             mkdirp(folders[f], function (err) {
                 if (err) {
                     console.error('ERROR creating ' + folders[f] +
@@ -40,7 +39,6 @@ async.series([
     },
 
     function(callback) {
-        console.log('Creating ' + distJs);
         var b = browserify([distSource], {standalone: 'Wcrypt'})
             .transform('babelify', {presets: ['es2015']});
         b.ignore('node-webcrypto-ossl');
@@ -62,7 +60,6 @@ async.series([
     },
 
     function(callback) {
-        console.log('Creating ' + testJs);
         var b = browserify([testEncryptSource, testDecryptSource])
             .transform('babelify', {presets: ['es2015']});
         b.ignore('node-webcrypto-ossl');
@@ -84,7 +81,6 @@ async.series([
     },
 
     function(callback) {
-        console.log('Creating ' + testHtml);
         var html = '<!DOCTYPE html><html><head><meta charset="utf-8">' +
             '<title>webcrypto-crypt browser tests</title>' +
             '<link href="../../node_modules/mocha/mocha.css" rel="stylesheet" />' + 
@@ -103,7 +99,6 @@ async.series([
     },
 
     function(callback) {
-        console.log('Creating ' + exampleHtml);
         var html = '<!DOCTYPE html><html><head><meta charset="utf-8">' +
             '<title>webcrypto-crypt browser tests</title>' +
             '<script src="' + distPath + '"></script><script>' +

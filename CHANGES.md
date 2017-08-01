@@ -1,3 +1,14 @@
+## 2017-08-01  Release 0.1.11
+
+Fix error handling in node-streams.js.
+Remove support for WCRYPT_PASS.
+Add support for WCRYPT_PASSFILE.
+Remove extraneous msgs from browserify script.
+Clean up stdout messages in wcrypt cmdline tool.
+Remove extraneous debug msgs.
+Corrent some indentation.
+Update README.md.
+
 ## 2017-07-25  Release 0.1.10
 
 Make header definition dynamic based on config.
