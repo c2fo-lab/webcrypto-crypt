@@ -252,10 +252,10 @@ function getPassphrase(mode) {
                             return getPassphraseFromPrompt(mode);
                         }
                         else if (err.message === Config.err.passBlank) {
-                            console.error(err.message);
+                            throw err;
                         }
                         else {
-                            console.error(err);
+                            throw err;
                         }
                     });
             }
@@ -273,7 +273,7 @@ function getPassphrase(mode) {
                 return getPassphraseFromPrompt(mode);
             }
             else {
-                console.error(err);
+                throw err;
             }
         });
 }
