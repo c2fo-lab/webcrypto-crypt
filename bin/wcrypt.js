@@ -50,15 +50,20 @@ if (!process.stdin.isTTY) {
     }
 
     if (mode === 'encrypt') {
-        var wcrypt = new Wcrypt.cipher({
-            material: {
-                passphrase: getPassphrase(mode)
-            },
-            config: {}
-        });
-
-        wcryptStream.encrypt(wcrypt, process.stdin)
-            .pipe(destination);
+        getPassphrase(mode)
+            .then(passphrase => {
+                var wcrypt = new Wcrypt.cipher({
+                    material: {
+                        passphrase: passphrase
+                    },
+                    config: {}
+                });
+                wcryptStream.encrypt(wcrypt, process.stdin)
+                    .pipe(destination);
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
     else if (mode === 'decrypt') {
         wcryptStream.decrypt(getPassphrase, process.stdin)
@@ -136,15 +141,19 @@ else {
     }
 
     if (mode === 'encrypt') {
-        var wcrypt = new Wcrypt.cipher({
-            material: {
-                passphrase: getPassphrase(mode)
-            },
-            config: {}
-        });
-
-        wcryptStream.encrypt(wcrypt, source)
-            .pipe(destination);
+        getPassphrase(mode)
+            .then(passphrase => {
+                var wcrypt = new Wcrypt.cipher({
+                    material: {
+                        passphrase: passphrase
+                    },
+                    config: {}
+                });
+                wcryptStream.encrypt(wcrypt, source).pipe(destination);
+            })
+            .catch(err => {
+                console.error(err);
+            });
     }
     else if (mode === 'decrypt') {
         wcryptStream.decrypt(getPassphrase, source)
@@ -190,25 +199,30 @@ function getDataFromPrompt() {
 }
 
 function getPassphrase(mode) {
-    if (process.env.WCRYPT_PASSFILE) {
-        return process.env.WCRYPT_PASSFILE;
-    }
-    else {
+    return new Promise ((resolve, reject) => {
         var passphrase = readlineSync.question('Passphrase? ', {
             hideEchoBack: true,
             mask: ''
         });
-        if (mode === 'encrypt') {
-            var confirmPassphrase = readlineSync.question('Confirm passphrase: ', {
+        if (!passphrase)
+          reject(new Error('Passphrase cannot be blank.'));
+        else if (mode === 'encrypt') {
+            var confirmPassphrase = readlineSync.question(
+            'Confirm passphrase: ', {
                 hideEchoBack: true,
                 mask: ''
             });
             if (confirmPassphrase !== passphrase) {
-                passphrase = getPassphrase(mode);
+                resolve(getPassphrase(mode));
+            }
+            else {
+                resolve(passphrase.toString());
             }
         }
-        return passphrase.toString();
-    }
+        else {
+            resolve(passphrase.toString());
+        }
+    });
 }
 
 /**
