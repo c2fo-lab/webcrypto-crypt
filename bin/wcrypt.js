@@ -1,13 +1,15 @@
 #!/bin/sh
 ':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
 
-const Readable = require('stream').Readable,
+const Config = require('../lib/config.json'),
+    Readable = require('stream').Readable,
     chop = require('chop'),
     fs = require('fs'),
     os = require('os'),
     homePassFile = os.homedir() + '/.wcryptpass',
     readlineSync = require('readline-sync'),
     util = require('util'),
+    readFile = util.promisify(fs.readFile),
     statFile = util.promisify(fs.stat),
     Wcrypt = require('../index.js'),
     wcryptStream = require('../lib/node-streams.js'),
@@ -18,16 +20,16 @@ Wcrypt.DEBUG = false;
 // Data piped to us
 if (!process.stdin.isTTY) {
 
-    baseOptions(yargs.usage('Usage: data | $0 [options]'))
+    baseOptions(yargs.usage(Config.cmdline.pipeUsage))
         .option('outfile', {
             alias: 'o',
-            describe: 'write data to this file',
+            describe: Config.cmdline.outfile,
             type: 'string'
         })
         .requiresArg('outfile')
-        .example('cat msg.txt | $0 -o msg.wcrypt', 'encrypt,store in file')
-        .example('cat msg.wcrypt | $0 -d', 'decrypt')
-        .example('curl http:..:4196 | $0 > aud.wcrypt', 'stream to encrypt')
+        .example(Config.cmdline.ex1[0], Config.cmdline.ex1[1])
+        .example(Config.cmdline.ex2[0], Config.cmdline.ex2[1])
+        .example(Config.cmdline.ex3[0], Config.cmdline.ex3[1])
         .epilog('@c2folab')
         .showHelpOnFail(false, '--help for options')
         .strict(true)
@@ -45,7 +47,7 @@ if (!process.stdin.isTTY) {
     var destination = process.stdout;
     if (yargs.argv.outfile) {
         if (yargs.argv.debug)
-            console.error('Will write to file "' + yargs.argv.outfile + '".');
+            console.error('Will write to "' + yargs.argv.outfile);
         destination = fs.createWriteStream(yargs.argv.outfile);
     }
 
@@ -74,27 +76,27 @@ if (!process.stdin.isTTY) {
 // Data from file or command line
 else {
 
-    baseOptions(yargs.usage('Usage: $0 [options]'))
+    baseOptions(yargs.usage(Config.cmdline.usage))
         .option('outfile', {
             alias: 'o',
-            describe: 'write data to this file',
+            describe: Config.cmdline.outfile,
             type: 'string'
         })
         .option('infile', {
             alias: 'i',
-            describe: 'read data from this file',
+            describe: Config.cmdline.infile,
             type: 'string'
         })
         .option('arg', {
             alias: 'a',
-            describe: 'read data from command line',
+            describe: Config.cmdline.arg,
             type: 'string'
         })
         .requiresArg(['arg', 'infile', 'outfile'])
         .conflicts('arg', 'infile')
-        .example('$0 -i msg.txt -o msg.wcrypt', 'file to encrypt')
-        .example('$0 -di msg.wcrypt -o msg.txt', 'file to decrypt')
-        .example('$0 -a "nonessential appliances"', 'string to encrypt')
+        .example(Config.cmdline.ex4[0], Config.cmdline.ex4[1])
+        .example(Config.cmdline.ex5[0], Config.cmdline.ex5[1])
+        .example(Config.cmdline.ex6[0], Config.cmdline.ex6[1])
         .epilog('@c2folab')
         .showHelpOnFail(false, '--help for options')
         .strict(true)
@@ -139,6 +141,9 @@ else {
         source.push(getDataFromPrompt());
         source.push(null);
     }
+    source.on('error', err => {
+        console.error(err.message || err);
+    });
 
     if (mode === 'encrypt') {
         getPassphrase(mode)
@@ -181,13 +186,13 @@ function baseOptions (u) {
         .option('debug', {
             alias: 'D',
             default: 'false',
-            describe: 'write debug info to stderr',
+            describe: Config.cmdline.debug,
             boolean: true
         })
         .option('version', {
             alias: 'v',
             default: 'false',
-            describe: 'display version and exit',
+            describe: Config.cmdline.version,
             boolean: true
         })
         .help('help')
@@ -198,22 +203,22 @@ function getDataFromPrompt() {
     return readlineSync.question('Data to encrypt: ');
 }
 
-function getPassphrase(mode) {
+function getPassphraseFromPrompt(mode) {
     return new Promise ((resolve, reject) => {
-        var passphrase = readlineSync.question('Passphrase? ', {
+        var passphrase = readlineSync.question(Config.cmdline.passPrompt, {
             hideEchoBack: true,
             mask: ''
         });
         if (!passphrase)
-          reject(new Error('Passphrase cannot be blank.'));
+          reject(new Error(Config.err.passBlank));
         else if (mode === 'encrypt') {
             var confirmPassphrase = readlineSync.question(
-            'Confirm passphrase: ', {
+            Config.cmdline.passConf, {
                 hideEchoBack: true,
                 mask: ''
             });
             if (confirmPassphrase !== passphrase) {
-                resolve(getPassphrase(mode));
+                resolve(getPassphraseFromPrompt(mode));
             }
             else {
                 resolve(passphrase.toString());
@@ -225,36 +230,49 @@ function getPassphrase(mode) {
     });
 }
 
-/**
-getPassphraseFromFile()
-    .then(p => {
-        process.stdout.write('"' + p + '"');
-    })
-    .catch(err => {
-        console.error(err);
-    });
-**/
-function getPassphraseFromFile() {
+function getPassphrase(mode) {
     const passPath = process.env.WCRYPT_PASSFILE || homePassFile;
     return statFile(passPath)
         .then(stats => {
             if (parseInt(stats.mode) === 33152) {
                 return readFile(passPath)
                     .then(data => {
-                        return chop.chomp(data.toString('utf8'));
+                        const passphrase = chop.chomp(data.toString('utf8'));
+                        if (!passphrase)
+                            throw new Error(Config.err.passBlank);
+                        return passphrase;
                     })
                     .catch(err => {
-                        if (!err.code === 'ENOENT') {
+                        if (err.code === 'ENOENT') {
+                            debug('No wcryptpass file found.');
+                            return getPassphraseFromPrompt(mode);
+                        }
+                        else if (err.message === Config.err.filePerms) {
+                            debug('wcryptpass file has insecure permissions.');
+                            return getPassphraseFromPrompt(mode);
+                        }
+                        else if (err.message === Config.err.passBlank) {
+                            console.error(err.message);
+                        }
+                        else {
                             console.error(err);
                         }
                     });
             }
             else {
-                return new Error('File permissions are insecure.');
+                throw new Error(Config.err.filePerms);
             }
         })
         .catch(err => {
-            if (!err.code === 'ENOENT') {
+            if (err.code === 'ENOENT') {
+                debug('No wcryptpass file found.');
+                return getPassphraseFromPrompt(mode);
+            }
+            else if (err.message === Config.err.filePerms) {
+                debug('wcryptpass file has insecure permissions.');
+                return getPassphraseFromPrompt(mode);
+            }
+            else {
                 console.error(err);
             }
         });
