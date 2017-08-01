@@ -1,4 +1,21 @@
 {
+    "cmdline": {
+       "arg": "read data from command line",
+       "debug": "write debug info to stderr",
+       "ex1": ["cat msg.txt | $0 -o msg.wcrypt", "encrypt,store in file"],
+       "ex2": ["cat msg.wcrypt | $0 -d", "decrypt"],
+       "ex3": ["curl http:..:4196 | $0 > aud.wcrypt", "stream to encrypt"],
+       "ex4": ["$0 -i msg.txt -o msg.wcrypt", "file to encrypt"],
+       "ex5": ["$0 -di msg.wcrypt -o msg.txt", "file to decrypt"],
+       "ex6": ["$0 -a \"nonessential appliances\"", "string to encrypt"],
+       "infile": "read data from this file",
+       "outfile": "write data to this file",
+       "passConf": "Confirm passphrase: ",
+       "passPrompt": "Password? ",
+       "pipeUsage": "Usage: data | $0 [options]",
+       "usage": "$0 [options]",
+       "version": "display version and exit"
+    },
     "crypto": {
         "algorithm": "AES-GCM",
         "ivLength": 12,
@@ -16,7 +33,14 @@
     "err": {
         "chunkDecrypt": "Could not decrypt chunk- ",
         "chunkEncrypt": "Could not encrypt chunk- ",
-        "passphrase": "Incoming passphrase must be a string."
+        "encryptNew": "Data encrypted with an earlier version of ",
+        "encryptOld": "Data encrypted with a later version of ",
+        "fileDecrypt": "Could not decrypt file- ",
+        "filePerms": "File permissions are insecure.",
+        "passBlank": "Passphrase cannot be blank.",
+        "passString": "Incoming passphrase must be a string.",
+        "passReq": "Please pass in a passphrase string or options object.",
+        "sigInvalid": "Invalid file signature "
     },
     "signaturePrefix": "WCRYPT",
     "suffix": "wcrypt"

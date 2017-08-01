@@ -30,7 +30,7 @@ module.exports = exports = {
             };
         }
         else if (Array.isArray(options) || typeof options === 'number') {
-            throw Error('Please pass in a passphrase string or options object.');
+            throw Error(Config.err.passReq);
         }
         else if (!options.config) {
             options.config = {};
@@ -199,14 +199,13 @@ module.exports = exports = {
         }
 
         function _getRandomBytes (numBytes) {
-            exports.debug('_getRandomBytes', numBytes);
             var buf = new Uint8Array(numBytes);
             return wcrypt.crypto.getRandomValues(buf);
         }
 
         function _importKey () {
             if (typeof material.passphrase !== 'string') {
-                return Promise.reject(config.err.passphrase);
+                return Promise.reject(config.err.passString);
             }
             else {
                 return wcrypt.subtle.importKey(
@@ -326,17 +325,12 @@ module.exports = exports = {
             prefix = signature.substring(0, exports.head.pref),
             version = signature.substring(exports.head.pref, exports.head.sig.e);
 
-        if (prefix != config.signaturePrefix) {
-             throw new Error('Encrypted data not recognized by ' +
-                 Package.name + ' (version ' + Package.version + ').');
-        }
-
-        else if (parseInt(version) > parseInt(Package.version)) {
-             console.error('Data encrypted with a later version of ' + Package.name + 
-                 ' (' + version + '). Assuming backward-compatibility with ' +
-                 'current version: ' + Package.version + '.'
-             );
-        }
+        if (prefix != config.signaturePrefix)
+             throw new Error(Config.err.sigInvalid + Package.name + Package.version);
+        else if (parseInt(version) > parseInt(Package.version))
+             console.error(Config.err.encryptOld + Package.name);
+        else if (parseInt(version) < parseInt(Package.version))
+             console.error(Config.err.encryptNew + Package.name);
 
         //00  01  02  03  04  05  06  07  08  09  10  11  12  13  14  16  17  18
         // W   C   R   Y   P   T   m   v   .   m   v   .   p   v   2   0   0   0
@@ -346,12 +340,18 @@ module.exports = exports = {
         // e   c   t   o   r   -   s   a   l   t   -   -   -   -   -   -   -   -
         //55  56  57  58  59  60  61  62  63  64  65  66
         // -   -   -   -   <   W   c   R   y   P   +   >
-        config.derive.iterations = parseInt((data.slice(exports.head.iter.b,exports.head.iter.e)).toString('utf8'));
-        config.crypto.tagLength  = parseInt(data.slice(exports.head.tag.b,exports.head.tag.e).toString('utf8'));
-        config.derive.length     = parseInt(data.slice(exports.head.length.b,exports.head.length.e).toString('utf8'));
-        config.derive.hash       = data.slice(exports.head.hash.b,exports.head.hash.e).toString('utf8');
-        material.iv              = transcoder.buf2ab(data.slice(exports.head.iv.b,exports.head.iv.e));
-        material.salt            = transcoder.buf2ab(data.slice(exports.head.salt.b,exports.head.salt.e));
+        config.derive.iterations = parseInt((data.slice(
+            exports.head.iter.b,exports.head.iter.e)).toString('utf8'));
+        config.crypto.tagLength  = parseInt(data.slice(
+            exports.head.tag.b,exports.head.tag.e).toString('utf8'));
+        config.derive.length     = parseInt(data.slice(
+            exports.head.length.b,exports.head.length.e).toString('utf8'));
+        config.derive.hash       = data.slice(
+            exports.head.hash.b,exports.head.hash.e).toString('utf8');
+        material.iv              = transcoder.buf2ab(
+            data.slice(exports.head.iv.b,exports.head.iv.e));
+        material.salt            = transcoder.buf2ab(
+            data.slice(exports.head.salt.b,exports.head.salt.e));
 
         return {
             config: config,
