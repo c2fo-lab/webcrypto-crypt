@@ -1,3 +1,9 @@
+## 2017-08-31  Release 0.1.12
+
+  Reduce number of errors emitted during stream error.
+  Correct variable name in transcoder.
+  Update README.md.
+
 ## 2017-08-01  Release 0.1.11
 
 Fix error handling in node-streams.js.
