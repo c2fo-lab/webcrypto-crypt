@@ -12,11 +12,7 @@
   
 # Introduction
 
-**webcrypto-crypt** provides a single library for encrypting and decrypting [data at rest](https://en.wikipedia.org/wiki/Data_at_rest#Concerns_about_data_at_rest) in node and the browser.  It enables [secret key cryptography](https://www.ibm.com/support/knowledgecenter/SSYKE2_8.0.0/com.ibm.java.security.component.80.doc/security-component/jsse2Docs/secretkeycryptography.html) [with a passphrase](https://en.wikipedia.org/wiki/PBKDF2#Purpose_and_operation) using either [Window.crypto](https://developer.mozilla.org/en-US/docs/Web/API/Window/crypto) or [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl), depending on the environment in which it's running.  Please see this important [**WARNING**](https://github.com/PeculiarVentures/node-webcrypto-ossl#warning).
-
-For node, webcrypto-crypt also installs a utility called **wcrypt** intended to help with files on disk, other sources of piped data, etc. from the command line.
-
-Technical details on webcrypto-crypt's default [key derivation function](https://en.wikipedia.org/wiki/Key_derivation_function) and [symmetric key algorithm](https://en.wikipedia.org/wiki/Symmetric-key_algorithm) can be found in the W3C WebCrypto API specification sections, [PBKDF2](https://www.w3.org/TR/WebCryptoAPI/#pbkdf2) and [AES-GCM](https://www.w3.org/TR/WebCryptoAPI/#aes-gcm).
+**webcrypto-crypt** encrypts and decrypts [data at rest](https://en.wikipedia.org/wiki/Data_at_rest#Concerns_about_data_at_rest) in node and the browser.  It enables [secret key cryptography](https://www.ibm.com/support/knowledgecenter/SSYKE2_8.0.0/com.ibm.java.security.component.80.doc/security-component/jsse2Docs/secretkeycryptography.html) [with a passphrase](https://en.wikipedia.org/wiki/PBKDF2#Purpose_and_operation) using either [Window.crypto](https://developer.mozilla.org/en-US/docs/Web/API/Window/crypto) or [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl) depending on which JavaScript runtime is currently in use.  Regardless of runtime, encryption and decryption depend on the [PBKDF2](https://www.w3.org/TR/WebCryptoAPI/#pbkdf2) [key derivation function](https://en.wikipedia.org/wiki/Key_derivation_function) and [AES-GCM](https://www.w3.org/TR/WebCryptoAPI/#aes-gcm) [symmetric key algorithm](https://en.wikipedia.org/wiki/Symmetric-key_algorithm).  For node, the package provides convenience methods for handling streams and also installs a command-line utility called **wcrypt** to facilitate dealing directly with files on disk and other sources of piped data.
 
 # Install
 
@@ -46,7 +42,7 @@ Technical details on webcrypto-crypt's default [key derivation function](https:/
 
     Copyright (c) 2017 C2FO...
 
-### From command line arg
+### From arg
  
     λ wcrypt -a 'edge of a dynastic rebellion' > mydata.wcrypt
     Passphrase?
@@ -67,7 +63,7 @@ Technical details on webcrypto-crypt's default [key derivation function](https:/
 
 ```javascript
     const Wcrypt = require('webcrypto-crypt'),
-        wcrypt = new Wcrypt.cipher('testPass');
+        wcrypt = new Wcrypt.cipher('justtesting');
     wcrypt.encrypt('no honour among consultants.')
     .then((buf) => {
         // do something with buf
@@ -79,7 +75,7 @@ Technical details on webcrypto-crypt's default [key derivation function](https:/
 ```jsx
     <script src="/path/to/dist/wcrypt.js"></script>
     <script>
-        var wcrypt = new Wcrypt.cipher('testPass');
+        var wcrypt = new Wcrypt.cipher('justtesting');
         wcrypt.encrypt('edge of a dynastic rebellion')
         .then((buf) => {
             // do something with buf
@@ -172,8 +168,6 @@ Technical details on webcrypto-crypt's default [key derivation function](https:/
     1GTLSRGmdkiAn6pwBB1XWYllS2VgF87h8575Ok2NlIzdH42YgoUFRpFiqbYqj2BKLJEQqoQ-
     index.html:11 in a world that allowed such mistakes
 
-Note that **webcrypto-crypt** injects [browserify](https://www.npmjs.com/package/buffer)'s global ```Buffer``` object in the browser context so that data can be easily encoded outside of browserified code, as needed.
-
 # Test
 
 ## Tested environments
@@ -191,7 +185,7 @@ Note that **webcrypto-crypt** injects [browserify](https://www.npmjs.com/package
 
 ## Browsers
 
-A file that should run the module tests in the browser is ```test/browser/wcrypt-test.html```
+A file that should run the module tests in the browser is ```test/browser/wcrypt-test.html```. webcrypto-crypt currently injects [browserify](https://www.npmjs.com/package/buffer)'s ```Buffer``` as a global object.
 
 # API
 
@@ -222,7 +216,7 @@ Provided ```data``` is a valid webcrypto-wcrypt header, parse it and return an o
 
 ## Wcrypt.setHeader(Object config)
 
-Not intended for general use; applies this configuration object to the current file header definition.
+Applies this configuration object to the current file header definition.
 
 ## Wcrypt.DEBUG = true | false
 
@@ -230,7 +224,7 @@ If set to ```true```, send debugging statements to stderr.  Default ```false```.
 
 ## new Wcrypt.cipher(String passphrase || Object options)
 
-Instantiate a webcrypto-crypt object using just a passphrase or more options beyond the passphrase.  When passing in an object, the minimum specification looks like ```{material: { passphrase: <your passphrase> } }```.  All the possible options are described below and note that if you do choose to employ custom ``tagLength``, ```hash```, ```iterations```, or ```length``` attributes that a similarly customized object will later be needed to decrypt the resulting data:
+Instantiate a webcrypto-crypt object using just a passphrase or more options beyond the passphrase.  When passing in an object, the minimum specification looks like ```{material: { passphrase: <your passphrase> } }```.  Possible options are described below:
 
 ```javascript
     var wcrypt = new Wcrypt.cipher({
@@ -248,7 +242,7 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
         },
         material: {
             iv: myInitializationVector,   // default getRandomValues(new Uint8Array(12))
-            passphrase: 'myTestSecret123' // REQUIRED, passphrase as String
+            passphrase: 'justtesting',    // REQUIRED, passphrase as String
             salt: mySalt                  // default getRandomValues(new Uint8Array(16))
         }
     })
@@ -257,13 +251,11 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
 
 ## wcrypt.createHeader()
 
-Return a ```Buffer``` filled with the appropriate seed data for encryption.  See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L341-L354).
+Return a ```Buffer``` filled with the appropriate seed data for encryption.  See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L335-L354).
 
 ## wcrypt.decrypt(Buffer data)
 
-Decrypt ```data``` by first parsing its header section to extract ```config``` and ```material``` settings.  Note that the invoking ```wcrypt``` object will assume these extracted ```config``` and ```material``` settings for all its subsequent operations, unless subsequently overridden by reading in a different header.
-
-Returns a promise with its resolved value set to a Buffer of the decrypted data.
+Decrypt ```data``` by first parsing its header section to extract ```config``` and ```material``` settings.  The innvoking ```wcrypt``` object will assume any extracted ```config``` and ```material``` settings for all subsequent operations until overwritten n by reading a different header.  Returns a promise with its resolved value set to a Buffer of the decrypted data.
 
 ## wcrypt.delimiter
 
@@ -271,15 +263,11 @@ The current delimiter in use by this library, e.g., ```<WcRyP+>```.
 
 ## wcrypt.encrypt(Buffer data)
 
-Encrypt the given data and include a header.
-
-Returns a promise with its resolved value set to a Buffer of the encrypted data.
+Encrypt the given data and include a header.  Returns a promise with its resolved value set to a Buffer of the encrypted data.
 
 ## wcrypt.encryptDelimited(Buffer data)
 
-Encrypt the given data and include a delimiter.
-
-Returns a promise with its resolved value set to a Buffer of the encrypted data.
+Encrypt the given data and include a delimiter.  Returns a promise with its resolved value set to a Buffer of the encrypted data.
 
 ## wcrypt.getDelimiter()
 
@@ -291,15 +279,11 @@ The current name of this library, e.g., ```webcrypto-crypt```.
 
 ## wcrypt.rawDecrypt(Buffer data, Object options)
 
-Decrypt ```data```.  Assumes no header present unless ```assumeHeader: true``` is passed in via an ```options``` object.
-
-Returns a promise with its resolved value set to a Buffer of the decrypted data.
+Decrypt ```data```.  Assumes no header present unless ```assumeHeader: true``` is passed in via an ```options``` object.  Returns a promise with its resolved value set to a Buffer of the decrypted data.
 
 ## wcrypt.rawEncrypt(Buffer data, Object options)
 
-Returns a promise with its resolved value set to a Buffer of the encrypted data.
-
-The first argument is the data to encrypt.  The second argument ```options``` is optional and currently supports two attributes:
+Returns a promise with its resolved value set to a Buffer of the encrypted data.  The first argument is the data to encrypt.  The second argument ```options``` is optional and currently supports two attributes:
 
     wcrypt.rawEncrypt('Some text to encrypt', {appendDelimiter: true});
 
@@ -307,7 +291,7 @@ Will append the ```wcrypt.delimiter``` to the end of the encrypted data before r
 
     wcrypt.rawEncrypt('Some text to encrypt', {includeHeader: true});
 
-Will append a cleartext header to the returned data including: ```initialization vector```, ```iterations```, ```salt```, and ```tagLength``` used in the encryption.  See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L341-L354).
+Will append a cleartext header to the returned data including: ```initialization vector```, ```iterations```, ```salt```, and ```tagLength``` used in the encryption.  See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L335-L354).
 
 ## wcrypt.subtle
 
@@ -323,41 +307,41 @@ The current version of this library, e.g., ```0.1.2```.
 
 # Processing node streams
 
-In a node.js environment, ```webcrypto-crypt/lib/node-streams``` provides convenience methods for encrypting and decrypting [Readable Streams](https://nodejs.org/api/stream.html#stream_readable_streams).
-
-## Encrypt a readable stream
-
-When encrypting, you'll need to pass in your own ```wcrypt``` object:
+In a node.js environment, ```webcrypto-crypt/lib/node-streams``` provides convenience methods for encrypting and decrypting [Readable Streams](https://nodejs.org/api/stream.html#stream_readable_streams).  Please assume the following lines precede these examples:
 
 ```javascript
     const fs = require('fs'),
         Wcrypt = require('webcrypto-crypt'),
-        wcrypt = new Wcrypt.cipher('testing123'),
-        nodeStream = require('webcrypto-crypt/lib/node-streams');
+        WcryptStream = require('webcrypto-crypt/lib/node-streams'),
+        cleartext = 'LICENSE', ciphertext = cleartext + '.wcrypt';
+```
 
-        const license = fs.createReadStream('LICENSE'),
-            licenseEncrypted = fs.createWriteStream('LICENSE.wcrypt'),
-            readableEncrypted = nodeStream.encrypt(wcrypt, license);
-        readableEncrypted.on('data', (chunk) => {
-            licenseEncrypted.write(chunk);
+## Encrypt a readable stream
+
+When encrypting you need to pass in your own ```wcrypt``` object:
+
+```javascript
+        const wcrypt = new Wcrypt.cipher('justtesting');
+        const clear = fs.createReadStream(cleartext),
+            encrypted = fs.createWriteStream(ciphertext),
+            read = WcryptStream.encrypt(wcrypt, clear);
+
+        read.on('data', (chunk) => {
+            encrypted.write(chunk);
         });
-        readableEncrypted.on('end', () => {
-            console.error('wrote LICENSE.wcrypt');
+        read.on('end', () => {
+            console.error('wrote ' + ciphertext);
         });
 ```
 
 ## Decrypt a readable stream
 
-When decrypting, you'll need to pass in a passphrase so that an internal ```wcrypt``` object can then be derived based on the passphrase, plus the information found in stream's header:
+When decrypting you need to pass in the passphrase:
 
 ```javascript
-    const fs = require('fs'),
-        Wcrypt = require('webcrypto-crypt'),
-        nodeStream = require('webcrypto-crypt/lib/node-streams');
-
-        const licenseEncrypted = fs.createReadStream('LICENSE.wcrypt'),
-            readableDecrypted = nodeStream.decrypt('testing123', licenseEncrypted);
-        readableDecrypted.on('data', (chunk) => {
+        const decrypt = fs.createReadStream(ciphertext),
+            read = nodeStream.decrypt('justtesting', decrypt);
+        read.on('data', (chunk) => {
             console.log(chunk.toString('utf8'));
         });
 ```
@@ -402,7 +386,7 @@ Installing **webcrypto-crypt** also installs a command-line utilty, **wcrypt**:
       cat msg.wcrypt | wcrypt -d               decrypt
       curl http:..:4196 | wcrypt > aud.wcrypt  stream to encrypt
 
-## Command-line examples
+## Examples
 
 Note that some of these examples may take a few minutes to download or stream.
 
@@ -442,7 +426,7 @@ If no passphrase is specified, ```wcrypt``` will consult the environment variabl
 
 # Header structure
 
-See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L341-L354).
+See [these lines](https://github.com/petethomas/webcrypto-crypt/blob/master/index.js#L335-L354).
 
 # Security
 
