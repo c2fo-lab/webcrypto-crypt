@@ -1,3 +1,11 @@
+## 2017-11-11  Release 0.1.14
+
+Add 'paranoid' option to optionally prevent delimiter from showing up in encrypted blocks.
+Add event name to emit() call.
+Clean up error handling in promises.
+Add warnings to README.md about unique initialization vector and salt.
+Clean up text in README.md.
+
 ## 2017-08-31  Release 0.1.12
 
   Reduce number of errors emitted during stream error.

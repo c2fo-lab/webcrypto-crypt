@@ -1,4 +1,5 @@
-const Config = require('./lib/config.json'),
+const bindexOf = require('bindexof'),
+    Config = require('./lib/config.json'),
     Package  = require('./package.json'),
     Transcoder = require('./lib/transcoder.js'),
     Webcrypto = require('node-webcrypto-ossl'),
@@ -94,19 +95,13 @@ module.exports = exports = {
             }
             exports.debug('_decrypt', JSON.stringify(options));
             return _getKey()
-                .then((key) => {
+                .then(key => {
                     material.key = key;
                     return _wDecrypt(data);
                 })
-                .catch((err) => {
-                    throw err;
-                })
-                .then((data) => {
-                    return data;
-                })
-                .catch((err) => {
-                    throw err;
-                });
+                .catch(err => {throw err;})
+                .then(data => {return data;})
+                .catch(err => {throw err;});
         }
 
         function _deriveKey () {
@@ -135,19 +130,19 @@ module.exports = exports = {
                 data = Buffer.from(data, 'utf8');
             }
             return _getKey()
-                .then((key) => {
+                .then(key => {
                     material.key = key;
                     return _wEncrypt(data);
                 })
-                .catch((err) => {
-                    throw err;
+                .catch(err => {throw err;})
+                .then(result => {
+                    if (config.paranoid) {
+                        if (bindexOf(result, wcrypt.getDelimiter()))
+                            _encrypt(data, options);
+                    }
+                    return _encryptedBlock(result, options);
                 })
-                .then((data) => {
-                    return _encryptedBlock(data, options);
-                })
-                .catch((err) => {
-                    throw err;
-                });
+                .catch(err => {throw err;});
         }
 
         function _encryptedBlock (data, options) {
@@ -185,16 +180,12 @@ module.exports = exports = {
             }
             else {
                 return _importKey()
-                    .catch((err) => {
-                        throw err;
-                    })
-                    .then((key) => {
+                    .catch(err => {throw err;})
+                    .then(key => {
                         material.baseKey = key;
                         return _deriveKey();
                     })
-                    .catch((err) => {
-                        throw err;
-                    });
+                    .catch(err => {throw err;});
             }
         }
 
@@ -233,6 +224,7 @@ module.exports = exports = {
             config.derive.hash       = overrides.derive.hash       || config.derive.hash;
             config.derive.iterations = overrides.derive.iterations || config.derive.iterations;
             config.derive.length     = overrides.derive.length     || config.derive.length;
+            config.paranoid          = overrides.paranoid          || false;
             exports.debug('_overrideConfig result', JSON.stringify(config));
 
         };
@@ -262,12 +254,10 @@ module.exports = exports = {
                 material.key,
                 transcoder.buf2ab(data)
             )
-                .then((result) => {
+                .then(result => {
                     return transcoder.ab2buf(result);
                 })
-                .catch((err) => {
-                    throw err;
-                });
+                .catch(err => {throw err;});
         }
 
         function _wEncrypt (data) {
@@ -280,12 +270,8 @@ module.exports = exports = {
                 material.key,
                 transcoder.buf2ab(data)
             )
-                .then((result) => {
-                    return transcoder.ab2buf(result);
-                })
-                .catch((err) => {
-                    throw err;
-                });
+                .then(result => {return transcoder.ab2buf(result);})
+                .catch(err => {throw err;});
         }
 
     },

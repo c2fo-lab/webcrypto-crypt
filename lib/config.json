@@ -11,7 +11,7 @@
        "infile": "read data from this file",
        "outfile": "write data to this file",
        "passConf": "Confirm passphrase: ",
-       "passPrompt": "Password? ",
+       "passPrompt": "Passphrase? ",
        "pipeUsage": "Usage: data | $0 [options]",
        "usage": "$0 [options]",
        "version": "display version and exit"

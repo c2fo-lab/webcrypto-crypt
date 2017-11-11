@@ -12,7 +12,13 @@
   
 # Introduction
 
-**webcrypto-crypt** encrypts and decrypts [data at rest](https://en.wikipedia.org/wiki/Data_at_rest#Concerns_about_data_at_rest) in node and the browser.  It enables [secret key cryptography](https://www.ibm.com/support/knowledgecenter/SSYKE2_8.0.0/com.ibm.java.security.component.80.doc/security-component/jsse2Docs/secretkeycryptography.html) [with a passphrase](https://en.wikipedia.org/wiki/PBKDF2#Purpose_and_operation) using either [Window.crypto](https://developer.mozilla.org/en-US/docs/Web/API/Window/crypto) or [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl) depending on which JavaScript runtime is currently in use.  Regardless of runtime, encryption and decryption depend on the [PBKDF2](https://www.w3.org/TR/WebCryptoAPI/#pbkdf2) [key derivation function](https://en.wikipedia.org/wiki/Key_derivation_function) and [AES-GCM](https://www.w3.org/TR/WebCryptoAPI/#aes-gcm) [symmetric key algorithm](https://en.wikipedia.org/wiki/Symmetric-key_algorithm).  For node, the package provides convenience methods for handling streams and also installs a command-line utility called **wcrypt** to facilitate dealing directly with files on disk and other sources of piped data.
+**webcrypto-crypt** encrypts and decrypts [data at rest](https://en.wikipedia.org/wiki/Data_at_rest#Concerns_about_data_at_rest) in node or the browser using [secret key cryptography](https://www.ibm.com/support/knowledgecenter/SSYKE2_8.0.0/com.ibm.java.security.component.80.doc/security-component/jsse2Docs/secretkeycryptography.html) in conjunction with a [passphrase](https://en.wikipedia.org/wiki/PBKDF2#Purpose_and_operation).
+
+The package will use either the [Window.crypto](https://developer.mozilla.org/en-US/docs/Web/API/Window/crypto) or [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl) library, depending on where it's running.
+
+Encryption and decryption depend on the [key derivation function](https://en.wikipedia.org/wiki/Key_derivation_function) referred to as [PBKDF2](https://www.w3.org/TR/WebCryptoAPI/#pbkdf2) and the      [symmetric key algorithm](https://en.wikipedia.org/wiki/Symmetric-key_algorithm) called [AES-GCM](https://www.w3.org/TR/WebCryptoAPI/#aes-gcm).
+
+For node, the package provides streaming methods and command-line utility **wcrypt** to deal with files and pipes.
 
 # Install
 
@@ -73,7 +79,7 @@
 ## Browser
 
 ```jsx
-    <script src="/path/to/dist/wcrypt.js"></script>
+    <script src="dist/wcrypt.js"></script>
     <script>
         var wcrypt = new Wcrypt.cipher('justtesting');
         wcrypt.encrypt('edge of a dynastic rebellion')
@@ -140,7 +146,7 @@
 ```jsx
 <html>
     <head>
-        <script src="/path/to/dist/wcrypt.js"></script>
+        <script src="dist/wcrypt.js"></script>
         <script>
             var wcrypt = new Wcrypt.cipher(prompt("Secret? "));
             wcrypt.encrypt(prompt("Data to encrypt? "))
@@ -174,10 +180,10 @@
 
 | **OS** | **Environment** | **Version** |
 | :-------- | :------- | :------- |
-| Mac Sierra | Chrome  | 59.0.3071.115 (64-bit) |
-| Mac Sierra | Firefox  | 54.0.1 (64-bit) |
-| Mac Sierra | Node  | node v8.1.4 v8 5.8.283.41 |
-| Mac Sierra | WebKit Nightly | Release 34 (Safari 11.0, WebKit 12604.1.27.0.1) |
+| Mac Sierra | Chrome  | 62  |
+| Mac Sierra | Firefox  | 57  |
+| Mac Sierra | Node  | node v8.9.1 |
+| Mac Sierra | Safari | 11.0 |
 
 ## Node.js
 
@@ -238,7 +244,12 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
                 hash: myHashFunction,        // default 'SHA-512'
                 iterations: myIterations,    // default 2000
                 length: myLength,            // default 128
-            }
+            },
+            paranoid: true                   // check each encrypted block
+                                             // for incidental presence of
+                                             // the delimiter, re-encrypt data
+                                             // if detected (very slow).
+                                             // default false
         },
         material: {
             iv: myInitializationVector,   // default getRandomValues(new Uint8Array(12))
@@ -248,6 +259,8 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
     })
     .then(...
 ```
+
+Callers passing in their own value for initialization vector (```material.iv```) must ensure that it is [never reused under the same key](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Initialization_vector_.28IV.29).  Likwise, callers passing in their own value for key derivation salt (```material.salt```) should ensure it contains data that explicitly [distinguishes between different operations](https://www.rfc-editor.org/rfc/rfc8018.txt).
 
 ## wcrypt.createHeader()
 
@@ -340,7 +353,7 @@ When decrypting you need to pass in the passphrase:
 
 ```javascript
         const decrypt = fs.createReadStream(ciphertext),
-            read = nodeStream.decrypt('justtesting', decrypt);
+            read = WcryptStream.decrypt('justtesting', decrypt);
         read.on('data', (chunk) => {
             console.log(chunk.toString('utf8'));
         });
@@ -390,7 +403,7 @@ Installing **webcrypto-crypt** also installs a command-line utilty, **wcrypt**:
 
 Note that some of these examples may take a few minutes to download or stream.
 
-Note also that you may set the environment variable **WCRYPT_PASS** to have **wcrypt** skip its passphrase prompts.
+Note also that you may set the environment variable **WCRYPT_PASSFILE** to have **wcrypt** skip its passphrase prompts.
 
 ### Text file
 
