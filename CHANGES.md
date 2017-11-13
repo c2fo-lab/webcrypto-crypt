@@ -1,3 +1,9 @@
+## 2017-11-13  Release 0.1.15
+
+Add badges to README.md.
+Fix github repo links in README.md.
+Add .travis.yml.
+
 ## 2017-11-11  Release 0.1.14
 
 Add 'paranoid' option to optionally prevent delimiter from showing up in encrypted blocks.
