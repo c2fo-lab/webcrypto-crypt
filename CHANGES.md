@@ -1,3 +1,7 @@
+## 2017-11-14  Release 0.1.17
+
+Update descriptive data in package.json.
+
 ## 2017-11-13  Release 0.1.16
 
 Add use strict.
