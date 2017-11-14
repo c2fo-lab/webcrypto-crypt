@@ -268,7 +268,7 @@ Callers passing in their own value for initialization vector (```material.iv```)
 
 ## wcrypt.createHeader()
 
-Return a ```Buffer``` filled with the appropriate seed data for encryption.  See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L335-L354).
+Return a ```Buffer``` filled with the appropriate seed data for encryption.  See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L322-L329).
 
 ## wcrypt.decrypt(Buffer data)
 
@@ -308,7 +308,7 @@ Will append the ```wcrypt.delimiter``` to the end of the encrypted data before r
 
     wcrypt.rawEncrypt('Some text to encrypt', {includeHeader: true});
 
-Will append a cleartext header to the returned data including: ```initialization vector```, ```iterations```, ```salt```, and ```tagLength``` used in the encryption.  See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L335-L354).
+Will append a cleartext header to the returned data including: ```initialization vector```, ```iterations```, ```salt```, and ```tagLength``` used in the encryption.  See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L322-L329).
 
 ## wcrypt.subtle
 
@@ -443,7 +443,7 @@ If no passphrase is specified, ```wcrypt``` will consult the environment variabl
 
 # Header structure
 
-See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L335-L354).
+See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L322-L329).
 
 # Security
 
