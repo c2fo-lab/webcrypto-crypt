@@ -1,6 +1,6 @@
 #!/bin/sh
 ':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
-
+'use strict';
 const Config = require('../lib/config.json'),
     Readable = require('stream').Readable,
     chop = require('chop'),

@@ -96,39 +96,40 @@ For node, the package provides streaming methods and command-line utility **wcry
 ## Node.js
 
 ```javascript
-    #!/bin/sh
-    ':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
+#!/bin/sh
+':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
+'use strict';
+const readlineSync = require('readline-sync'),
+    Wcrypt = require('webcrypto-crypt');
 
-    const readlineSync = require('readline-sync'),
-        Wcrypt = require('webcrypto-crypt');
+function askForData() {
+    return readlineSync
+        .question('Data to encrypt? ');
+}
 
-    function askForData() {
-        return readlineSync
-            .question('Data to encrypt? ');
-    }
+function askForPassphrase() {
+    return readlineSync
+        .question('Passphrase to use? ',
+            {hideEchoBack: true, mask:''}
+    );
+}
 
-    function askForPassphrase() {
-        return readlineSync
-            .question('Passphrase to use? ',
-                {hideEchoBack: true, mask:''}
-        );
-    }
+var wcrypt = new Wcrypt.cipher(askForPassphrase());
 
-    var wcrypt = new Wcrypt.cipher(askForPassphrase());
+wcrypt.encrypt(askForData())
+.then((data) => {
+    console.log(`
+        Encrypted, hex-encoded: ${ data.toString('hex') },
+        Encrypted, base64-encoded: ${ data.toString('base64') },
+        Encrypted, web-safe base64-encoded: ${ wcrypt.uriSafeBase64(data) },
 
-    wcrypt.encrypt(askForData())
+        Decrypted using same passphrase:`
+    );
+    wcrypt.decrypt(data)
     .then((data) => {
-        console.log(
-            "\nEncrypted, hex-encoded: " + data.toString('hex'),
-            "\nEncrypted, base64-encoded: " + data.toString('base64'),
-            "\nEncrypted, web-safe base64-encoded: " + wcrypt.uriSafeBase64(data),
-            "\n\nDecrypted using same passphrase:"
-        );
-        wcrypt.decrypt(data)
-        .then((data) => {
-            console.log(Buffer.from(data).toString('utf8'));
-        });
+        console.log('        ' + Buffer.from(data).toString('utf8'));
     });
+});
 ```
 
     λ node examples/prompts.js
@@ -153,15 +154,16 @@ For node, the package provides streaming methods and command-line utility **wcry
             var wcrypt = new Wcrypt.cipher(prompt("Secret? "));
             wcrypt.encrypt(prompt("Data to encrypt? "))
             .then((data) => {
-                 console.log(
-                     "\nEncrypted, hex-encoded: " + data.toString("hex"),
-                     "\nEncrypted, base64-encoded: " + data.toString("base64"),
-                     "\nEncrypted, web-safe base64-encoded: " + wcrypt.uriSafeBase64(data),
-                     "\n\nDecrypted using same passphrase:"
+                 console.log(`
+         Encrypted, hex-encoded: ${ data.toString("hex") },
+         Encrypted, base64-encoded: ${ data.toString("base64") },
+         Encrypted, web-safe base64-encoded: ${ wcrypt.uriSafeBase64(data) },
+
+         Decrypted using same passphrase:`
                  );
                  wcrypt.decrypt(data)
                      .then((data) => {
-                         console.log(Buffer.from(data).toString("utf8"));
+                         console.log('         ' + Buffer.from(data).toString("utf8"));
                      });
             });
        </script>
@@ -184,7 +186,7 @@ For node, the package provides streaming methods and command-line utility **wcry
 | :-------- | :------- | :------- |
 | Mac Sierra | Chrome  | 62  |
 | Mac Sierra | Firefox  | 57  |
-| Mac Sierra | Node  | node v8.9.1 |
+| Mac Sierra | Node  | 8.9.1 |
 | Mac Sierra | Safari | 11.0 |
 
 ## Node.js
@@ -262,7 +264,7 @@ Instantiate a webcrypto-crypt object using just a passphrase or more options bey
     .then(...
 ```
 
-Callers passing in their own value for initialization vector (```material.iv```) must ensure that it is [never reused under the same key](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Initialization_vector_.28IV.29).  Likwise, callers passing in their own value for key derivation salt (```material.salt```) should ensure it contains data that explicitly [distinguishes between different operations](https://www.rfc-editor.org/rfc/rfc8018.txt).
+Callers passing in their own value for initialization vector (```material.iv```) must ensure that it is [never reused under the same key](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Initialization_vector_.28IV.29).  Likewise, callers passing in their own value for key derivation salt (```material.salt```) should ensure it contains data that explicitly [distinguishes between different operations](https://www.rfc-editor.org/rfc/rfc8018.txt).
 
 ## wcrypt.createHeader()
 
