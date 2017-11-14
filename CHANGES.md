@@ -1,3 +1,9 @@
+## 2017-11-13  Release 0.1.16
+
+Add use strict.
+Update README.md.
+Use backticks for interpolation in examples.
+
 ## 2017-11-13  Release 0.1.15
 
 Add badges to README.md.

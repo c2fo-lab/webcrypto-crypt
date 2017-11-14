@@ -1,3 +1,4 @@
+'use strict';
 const bindexOf = require('bindexof'),
     Config = require('./lib/config.json'),
     Package  = require('./package.json'),
