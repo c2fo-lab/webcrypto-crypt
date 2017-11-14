@@ -5,10 +5,21 @@
     "url": "https://github.com/c2fo-lab/webcrypto-crypt.git"
   },
   "license": "MIT",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "author": "C2FO Innovation Lab",
-  "description": "Secret-key crypto with a passphrase running in node and the browser",
-  "homepage": "https://c2folab.com",
+  "description": "Symmetric cryptography with a passphrase for node and the browser ",
+  "homepage": "https://c2fo-lab.github.io/webcrypto-crypt",
+  "keywords": [
+    "webcrypto",
+    "aes-gcm",
+    "pbkdf2",
+    "crypto",
+    "browser"
+  ],
+  "bugs": {
+    "url": "https://github.com/c2fo-lab/webcrypto-crypt/issues",
+    "email": "labs@c2fo.com"
+  },
   "dependencies": {
     "async": "^2.2.0",
     "babel-preset-es2015": "^6.24.1",
