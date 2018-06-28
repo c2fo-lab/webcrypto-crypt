@@ -40,7 +40,7 @@ async.series([
 
     function(callback) {
         var b = browserify([distSource], {standalone: 'Wcrypt'})
-            .transform('babelify', {presets: ['es2015']});
+            .transform('babelify', {presets: ['env']});
         b.ignore('node-webcrypto-ossl');
         var jsStream = b.bundle();
         var js = '';
@@ -61,7 +61,7 @@ async.series([
 
     function(callback) {
         var b = browserify([testEncryptSource, testDecryptSource])
-            .transform('babelify', {presets: ['es2015']});
+            .transform('babelify', {presets: ['env']});
         b.ignore('node-webcrypto-ossl');
         var jsStream = b.bundle();
         var js = '';
