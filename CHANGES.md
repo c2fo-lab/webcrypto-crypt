@@ -1,3 +1,7 @@
+## 2018-11-26  Release 0.1.19
+
+Address npm security advisory #720 (cryptiles)
+
 ## 2018-06-28  Release 0.1.18
 
 Upgrade npm packages.
