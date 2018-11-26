@@ -5,7 +5,7 @@
     "url": "https://github.com/c2fo-lab/webcrypto-crypt.git"
   },
   "license": "MIT",
-  "version": "0.1.18",
+  "version": "0.1.19",
   "author": "C2FO Innovation Lab",
   "description": "Symmetric cryptography with a passphrase for node and the browser ",
   "homepage": "https://c2fo-lab.github.io/webcrypto-crypt",
@@ -34,7 +34,7 @@
     "fstat-mode": "0.0.1",
     "mkdirp": "^0.5.1",
     "node-webcrypto-ossl": "^1.0.37",
-    "npm": "^6.1.0",
+    "npm": "^6.4.1",
     "readline-sync": "^1.4.9",
     "through2": "^2.0.3",
     "yargs": "^7.1.0"
