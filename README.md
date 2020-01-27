@@ -184,10 +184,10 @@ wcrypt.encrypt(askForData())
 
 | **OS** | **Environment** | **Version** |
 | :-------- | :------- | :------- |
-| Mac Sierra | Chrome  |  70.0.3538.110  |
-| Mac Sierra | Firefox  | 63.0.3  |
-| Mac Sierra | Node  | v10.13.0 |
-| Mac Sierra | Safari | 11.0.2 |
+| Mac El Capitan | Chrome  | 79.0.3945.130 |
+| Mac El Capitan | Firefox | 72.0.2  |
+| Mac El Capitan | Node    | v12.4.0 |
+| Mac El Capitan | Safari  | 11.1.2  |
 
 ## Node.js
 
