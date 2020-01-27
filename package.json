@@ -5,9 +5,9 @@
     "url": "https://github.com/c2fo-lab/webcrypto-crypt.git"
   },
   "license": "MIT",
-  "version": "0.1.19",
+  "version": "0.2.0",
   "author": "C2FO Innovation Lab",
-  "description": "Symmetric cryptography with a passphrase for node and the browser ",
+  "description": "Symmetric cryptography with a passphrase for node and the browser",
   "homepage": "https://c2fo-lab.github.io/webcrypto-crypt",
   "keywords": [
     "webcrypto",
@@ -21,29 +21,36 @@
     "email": "labs@c2fo.com"
   },
   "dependencies": {
-    "async": "^2.2.0",
+    "@babel/preset-env": "^7.8.3",
+    "async": "^3.1.1",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "babelify": "^7.3.0",
-    "binary-split": "^1.0.3",
+    "babelify": "^10.0.0",
+    "binary-split": "^1.0.5",
     "bindexof": "^1.0.1",
     "blob-to-buffer": "^1.2.8",
-    "browserify": "^16.2.2",
+    "browserify": "^16.5.0",
     "chop": "0.0.1",
-    "expect": "^1.20.2",
+    "expect": "^25.1.0",
+    "fs-extra": "^8.1.0",
     "fstat-mode": "0.0.1",
-    "mkdirp": "^0.5.1",
-    "node-webcrypto-ossl": "^1.0.37",
-    "npm": "^6.4.1",
-    "readline-sync": "^1.4.9",
-    "through2": "^2.0.3",
-    "yargs": "^7.1.0"
+    "node-webcrypto-ossl": "^1.0.48",
+    "npm": "^6.13.6",
+    "readline-sync": "^1.4.10",
+    "through2": "^3.0.1",
+    "yargs": "^15.1.0"
   },
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "mocha": "^7.0.1"
   },
   "engines": {
-    "node": "8",
+    "node": "12",
     "npm": "4.5"
   },
   "main": "index.js",
@@ -51,7 +58,7 @@
     "clean": "rm -rf npm-debug.log ./dist ./examples/browser ./test/browser ./test/*.wcrypt",
     "postinstall": "node ./bin/browserify.js",
     "superclean": "rm -rf npm-debug.log ./dist ./examples/browser ./test/browser ./test/*.wcrypt ./node_modules",
-    "test": "./node_modules/.bin/mocha --compilers js:babel-core/register --reporter spec"
+    "test": "./node_modules/.bin/mocha --reporter spec"
   },
   "bin": {
     "wcrypt": "./bin/wcrypt.js"

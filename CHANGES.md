@@ -1,3 +1,11 @@
+## 2020-01-27  Release 0.2.0
+
+Comply with eslint-config-standard
+Change Wcrypt.cipher() to Wcrypt.Cipher() to comply with eslint-config-standard
+Upgrade NPM packages.
+Modify browserify script & tests to work/pass with updated NPM packages.
+Update README to reflect latest node and browser tests completed.
+
 ## 2018-11-26  Release 0.1.19
 
 Address npm security advisory #720 (cryptiles)
