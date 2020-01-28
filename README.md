@@ -70,25 +70,31 @@ For node, the package provides streaming methods and command-line utility **wcry
 ## Node.js
 
 ```javascript
-    const Wcrypt = require('webcrypto-crypt'),
-        wcrypt = new Wcrypt.Cipher('justtesting');
+    const Wcrypt = require('webcrypto-crypt')
+    const wcrypt = new Wcrypt.Cipher('justtesting')
     wcrypt.encrypt('no honour among consultants.')
     .then((buf) => {
-        // do something with buf
-    });
+      // do something with buf
+    })
 ```
 
 ## Browser
 
 ```jsx
-    <script src="dist/wcrypt.js"></script>
-    <script>
+  <html>
+    <head>
+      <script src="dist/wcrypt.js"></script>
+      <script>
         var wcrypt = new Wcrypt.Cipher('justtesting');
         wcrypt.encrypt('edge of a dynastic rebellion')
-        .then((buf) => {
-            // do something with buf
-        });
-    </script>
+          .then((buf) => {
+            console.log('Results %s', buf);
+          });
+      </script>
+    </head>
+    <body>
+    </body>
+  </html>
 ```
 
 # Examples
@@ -99,37 +105,35 @@ For node, the package provides streaming methods and command-line utility **wcry
 #!/bin/sh
 ':' //; exec "$(command -v nodejs || command -v node)" "$0" "$@"
 'use strict';
-const readlineSync = require('readline-sync'),
-    Wcrypt = require('webcrypto-crypt');
+const readlineSync = require('readline-sync')
+const Wcrypt = require('webcrypto-crypt')
 
-function askForData() {
-    return readlineSync
-        .question('Data to encrypt? ');
+function askForData () {
+  return readlineSync.question('Data to encrypt? ')
 }
 
-function askForPassphrase() {
-    return readlineSync
-        .question('Passphrase to use? ',
-            {hideEchoBack: true, mask:''}
-    );
+function askForPassphrase () {
+  return readlineSync
+    .question('Passphrase to use? ',
+      { hideEchoBack: true, mask: '' }
+    )
 }
 
-var wcrypt = new Wcrypt.Cipher(askForPassphrase());
+var wcrypt = new Wcrypt.Cipher(askForPassphrase())
 
 wcrypt.encrypt(askForData())
-.then((data) => {
+  .then((data) => {
     console.log(`
-        Encrypted, hex-encoded: ${ data.toString('hex') },
-        Encrypted, base64-encoded: ${ data.toString('base64') },
-        Encrypted, web-safe base64-encoded: ${ wcrypt.uriSafeBase64(data) },
-
-        Decrypted using same passphrase:`
-    );
+      Encrypted, hex-encoded: ${data.toString('hex')},
+      Encrypted, base64-encoded: ${data.toString('base64')},
+      Encrypted, web-safe base64-encoded: ${wcrypt.uriSafeBase64(data)},
+      Decrypted using same passphrase:`
+    )
     wcrypt.decrypt(data)
-    .then((data) => {
-        console.log('        ' + Buffer.from(data).toString('utf8'));
-    });
-});
+      .then((data) => {
+        console.log('        ' + Buffer.from(data).toString('utf8'))
+      })
+  })
 ```
 
     λ node examples/prompts.js
@@ -148,29 +152,28 @@ wcrypt.encrypt(askForData())
 
 ```jsx
 <html>
-    <head>
-        <script src="dist/wcrypt.js"></script>
-        <script>
-            var wcrypt = new Wcrypt.Cipher(prompt("Secret? "));
-            wcrypt.encrypt(prompt("Data to encrypt? "))
+  <head>
+    <script src="dist/wcrypt.js"></script>
+    <script>
+      var wcrypt = new Wcrypt.Cipher(prompt("Secret? "));
+      wcrypt.encrypt(prompt("Data to encrypt? "))
+        .then((data) => {
+          console.log(`
+            Encrypted, hex-encoded: ${ data.toString("hex") },
+            Encrypted, base64-encoded: ${ data.toString("base64") },
+            Encrypted, web-safe base64-encoded: ${ wcrypt.uriSafeBase64(data) },
+            Decrypted using same passphrase:`
+          );
+          wcrypt.decrypt(data)
             .then((data) => {
-                 console.log(`
-         Encrypted, hex-encoded: ${ data.toString("hex") },
-         Encrypted, base64-encoded: ${ data.toString("base64") },
-         Encrypted, web-safe base64-encoded: ${ wcrypt.uriSafeBase64(data) },
-
-         Decrypted using same passphrase:`
-                 );
-                 wcrypt.decrypt(data)
-                     .then((data) => {
-                         console.log('         ' + Buffer.from(data).toString("utf8"));
-                     });
+              console.log('         ' + Buffer.from(data).toString("utf8"));
             });
-       </script>
-   </head>
-   <body>
-       (Check the Developer console.)
-   </body>
+        });
+   </script>
+ </head>
+ <body>
+   (Check the Developer console.)
+ </body>
 </html>
 ```
     
@@ -209,18 +212,18 @@ Provided ```data``` is a valid webcrypto-wcrypt header, parse it and return an o
 
 ```json
     {
-        "material": {
-            "iv": "<iv>",
-            "salt": "<salt>",
+      "material": {
+        "iv": "<iv>",
+        "salt": "<salt>",
+      },
+      "config": {
+        "crypto": {
+          "tagLength": "<tagLength>"
         },
-        "config": {
-            "crypto": {
-                "tagLength": "<tagLength>"
-            },
-            "derive": {
-                "iterations": "<iterations>"
-            }
+        "derive": {
+          "iterations": "<iterations>"
         }
+      }
     }
 ```
 
@@ -237,31 +240,31 @@ If set to ```true```, send debugging statements to stderr.  Default ```false```.
 Instantiate a webcrypto-crypt object using just a passphrase or more options beyond the passphrase.  When passing in an object, the minimum specification looks like ```{material: { passphrase: <your passphrase> } }```.  Possible options are described below:
 
 ```javascript
-    var wcrypt = new Wcrypt.Cipher({
-        config: {
-            crypto: {
-                usages: [myU1, myU2...],     // default ['encrypt', 'decrypt']
-                tagLength: myTagLength,      // default 128
-            },
-            delimiter: myDelimiter,          // default '<WcRyP+>'
-            derive: {
-                hash: myHashFunction,        // default 'SHA-512'
-                iterations: myIterations,    // default 2000
-                length: myLength,            // default 128
-            },
-            paranoid: true                   // check each encrypted block
-                                             // for incidental presence of
-                                             // the delimiter, re-encrypt data
-                                             // if detected (very slow).
-                                             // default false
-        },
-        material: {
-            iv: myInitializationVector,   // default getRandomValues(new Uint8Array(12))
-            passphrase: 'justtesting',    // REQUIRED, passphrase as String
-            salt: mySalt                  // default getRandomValues(new Uint8Array(16))
-        }
-    })
-    .then(...
+  var wcrypt = new Wcrypt.Cipher({
+    config: {
+      crypto: {
+        usages: [myU1, myU2...],  // default ['encrypt', 'decrypt']
+        tagLength: myTagLength,   // default 128
+      },
+      delimiter: myDelimiter,     // default '<WcRyP+>'
+      derive: {
+        hash: myHashFunction,     // default 'SHA-512'
+        iterations: myIterations, // default 2000
+        length: myLength,         // default 128
+      },
+      paranoid: true              // check each encrypted block
+                                  // for incidental presence of
+                                  // the delimiter, re-encrypt data
+                                  // if detected (very slow).
+                                  // default false
+    },
+    material: {
+      iv: myInitializationVector, // default getRandomValues(new Uint8Array(12))
+      passphrase: 'justtesting',  // REQUIRED, passphrase as String
+      salt: mySalt                // default getRandomValues(new Uint8Array(16))
+    }
+  })
+  .then(...
 ```
 
 Callers passing in their own value for initialization vector (```material.iv```) must ensure that it is [never reused under the same key](https://en.wikipedia.org/wiki/Block_cipher_mode_of_operation#Initialization_vector_.28IV.29).  Likewise, callers passing in their own value for key derivation salt (```material.salt```) should ensure it contains data that explicitly [distinguishes between different operations](https://www.rfc-editor.org/rfc/rfc8018.txt).
@@ -327,10 +330,11 @@ The current version of this library, e.g., ```0.1.2```.
 In a node.js environment, ```webcrypto-crypt/lib/node-streams``` provides convenience methods for encrypting and decrypting [Readable Streams](https://nodejs.org/api/stream.html#stream_readable_streams).  Please assume the following lines precede these examples:
 
 ```javascript
-    const fs = require('fs'),
-        Wcrypt = require('webcrypto-crypt'),
-        WcryptStream = require('webcrypto-crypt/lib/node-streams'),
-        cleartext = 'LICENSE', ciphertext = cleartext + '.wcrypt';
+        const fs = require('fs')
+        const Wcrypt = require('webcrypto-crypt')
+        const WcryptStream = require('webcrypto-crypt/lib/node-streams')
+        const cleartext = 'LICENSE'
+        const ciphertext = cleartext + '.wcrypt'
 ```
 
 ## Encrypt a readable stream
@@ -338,17 +342,17 @@ In a node.js environment, ```webcrypto-crypt/lib/node-streams``` provides conven
 When encrypting you need to pass in your own ```wcrypt``` object:
 
 ```javascript
-        const wcrypt = new Wcrypt.Cipher('justtesting');
-        const clear = fs.createReadStream(cleartext),
-            encrypted = fs.createWriteStream(ciphertext),
-            read = WcryptStream.encrypt(wcrypt, clear);
+        const wcrypt = new Wcrypt.Cipher('justtesting')
+        const clear = fs.createReadStream(cleartext)
+        const encrypted = fs.createWriteStream(ciphertext)
+        const read = WcryptStream.encrypt(wcrypt, clear)
 
         read.on('data', (chunk) => {
-            encrypted.write(chunk);
-        });
+          encrypted.write(chunk)
+        })
         read.on('end', () => {
-            console.error('wrote ' + ciphertext);
-        });
+          console.error('wrote ' + ciphertext)
+        })
 ```
 
 ## Decrypt a readable stream
@@ -356,11 +360,11 @@ When encrypting you need to pass in your own ```wcrypt``` object:
 When decrypting you need to pass in the passphrase:
 
 ```javascript
-        const decrypt = fs.createReadStream(ciphertext),
-            read = WcryptStream.decrypt('justtesting', decrypt);
+        const decrypt = fs.createReadStream(ciphertext)
+        const read = WcryptStream.decrypt('justtesting', decrypt)
         read.on('data', (chunk) => {
-            console.log(chunk.toString('utf8'));
-        });
+          console.log(chunk.toString('utf8'))
+        })
 ```
 
 # Command-line

@@ -1,5 +1,9 @@
 ## 2020-01-28  Release 0.2.2
 
+Update code snippets in README.
+
+## 2020-01-28  Release 0.2.2
+
 Fix link to lines showing header
 Add back .eslintrc.js
 Edit .travis.yml to request Node 12.4.0
