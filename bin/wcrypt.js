@@ -23,8 +23,9 @@ if (!process.stdin.isTTY) {
   baseOptions(yargs.usage(Config.cmdline.pipeUsage))
     .option('outfile', {
       alias: 'o',
-      describe: Config.cmdline.outfile,
-      type: 'string'
+      describe: Config.cmdline.outfile
+      // describe: Config.cmdline.outfile,
+      // type: 'string'
     })
     .requiresArg('outfile')
     .example(Config.cmdline.ex1[0], Config.cmdline.ex1[1])
@@ -74,18 +75,21 @@ if (!process.stdin.isTTY) {
   baseOptions(yargs.usage(Config.cmdline.usage))
     .option('outfile', {
       alias: 'o',
-      describe: Config.cmdline.outfile,
-      type: 'string'
+      describe: Config.cmdline.outfile
+      // describe: Config.cmdline.outfile,
+      // type: 'string'
     })
     .option('infile', {
       alias: 'i',
-      describe: Config.cmdline.infile,
-      type: 'string'
+      describe: Config.cmdline.infile
+      // describe: Config.cmdline.infile,
+      // type: 'string'
     })
     .option('arg', {
       alias: 'a',
-      describe: Config.cmdline.arg,
-      type: 'string'
+      describe: Config.cmdline.arg
+      // describe: Config.cmdline.arg,
+      // type: 'string'
     })
     .requiresArg(['arg', 'infile', 'outfile'])
     .conflicts('arg', 'infile')
@@ -166,22 +170,25 @@ function baseOptions (u) {
   u.$0 = 'wcrypt'
   return u
     .option('decrypt', {
-      alias: 'd',
-      boolean: true,
-      default: false,
-      type: 'boolean'
+      alias: 'd'
+      // alias: 'd',
+      // boolean: true,
+      // default: false,
+      // type: 'boolean'
     })
     .option('debug', {
       alias: 'D',
-      default: 'false',
-      describe: Config.cmdline.debug,
-      boolean: true
+      describe: Config.cmdline.debug
+      // default: 'false',
+      // describe: Config.cmdline.debug,
+      // boolean: true
     })
     .option('version', {
       alias: 'v',
-      default: 'false',
-      describe: Config.cmdline.version,
-      boolean: true
+      describe: Config.cmdline.version
+      // default: 'false',
+      // describe: Config.cmdline.version,
+      // boolean: true
     })
     .help('help')
     .alias('help', 'h')

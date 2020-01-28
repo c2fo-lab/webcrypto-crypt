@@ -1,3 +1,8 @@
+## 2020-01-27  Release 0.2.1
+
+Wcrypt.cipher() -> Wcrypt.Cipher() in README
+Fix bin/wcrypt.js so it behaves as expected.
+
 ## 2020-01-27  Release 0.2.0
 
 Comply with eslint-config-standard

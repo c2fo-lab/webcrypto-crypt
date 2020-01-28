@@ -71,7 +71,7 @@ For node, the package provides streaming methods and command-line utility **wcry
 
 ```javascript
     const Wcrypt = require('webcrypto-crypt'),
-        wcrypt = new Wcrypt.cipher('justtesting');
+        wcrypt = new Wcrypt.Cipher('justtesting');
     wcrypt.encrypt('no honour among consultants.')
     .then((buf) => {
         // do something with buf
@@ -83,7 +83,7 @@ For node, the package provides streaming methods and command-line utility **wcry
 ```jsx
     <script src="dist/wcrypt.js"></script>
     <script>
-        var wcrypt = new Wcrypt.cipher('justtesting');
+        var wcrypt = new Wcrypt.Cipher('justtesting');
         wcrypt.encrypt('edge of a dynastic rebellion')
         .then((buf) => {
             // do something with buf
@@ -114,7 +114,7 @@ function askForPassphrase() {
     );
 }
 
-var wcrypt = new Wcrypt.cipher(askForPassphrase());
+var wcrypt = new Wcrypt.Cipher(askForPassphrase());
 
 wcrypt.encrypt(askForData())
 .then((data) => {
@@ -151,7 +151,7 @@ wcrypt.encrypt(askForData())
     <head>
         <script src="dist/wcrypt.js"></script>
         <script>
-            var wcrypt = new Wcrypt.cipher(prompt("Secret? "));
+            var wcrypt = new Wcrypt.Cipher(prompt("Secret? "));
             wcrypt.encrypt(prompt("Data to encrypt? "))
             .then((data) => {
                  console.log(`
@@ -232,12 +232,12 @@ Applies this configuration object to the current file header definition.
 
 If set to ```true```, send debugging statements to stderr.  Default ```false```.
 
-## new Wcrypt.cipher(String passphrase || Object options)
+## new Wcrypt.Cipher(String passphrase || Object options)
 
 Instantiate a webcrypto-crypt object using just a passphrase or more options beyond the passphrase.  When passing in an object, the minimum specification looks like ```{material: { passphrase: <your passphrase> } }```.  Possible options are described below:
 
 ```javascript
-    var wcrypt = new Wcrypt.cipher({
+    var wcrypt = new Wcrypt.Cipher({
         config: {
             crypto: {
                 usages: [myU1, myU2...],     // default ['encrypt', 'decrypt']
@@ -338,7 +338,7 @@ In a node.js environment, ```webcrypto-crypt/lib/node-streams``` provides conven
 When encrypting you need to pass in your own ```wcrypt``` object:
 
 ```javascript
-        const wcrypt = new Wcrypt.cipher('justtesting');
+        const wcrypt = new Wcrypt.Cipher('justtesting');
         const clear = fs.createReadStream(cleartext),
             encrypted = fs.createWriteStream(ciphertext),
             read = WcryptStream.encrypt(wcrypt, clear);
