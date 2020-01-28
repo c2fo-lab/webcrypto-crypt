@@ -5,7 +5,7 @@
     "url": "https://github.com/c2fo-lab/webcrypto-crypt.git"
   },
   "license": "MIT",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "C2FO Innovation Lab",
   "description": "Symmetric cryptography with a passphrase for node and the browser",
   "homepage": "https://c2fo-lab.github.io/webcrypto-crypt",
