@@ -268,7 +268,7 @@ Callers passing in their own value for initialization vector (```material.iv```)
 
 ## wcrypt.createHeader()
 
-Return a ```Buffer``` filled with the appropriate seed data for encryption.  See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L322-L329).
+Return a ```Buffer``` filled with the appropriate seed data for encryption.  See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L293-L300).
 
 ## wcrypt.decrypt(Buffer data)
 
