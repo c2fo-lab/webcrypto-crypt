@@ -5,7 +5,7 @@
     "url": "https://github.com/c2fo-lab/webcrypto-crypt.git"
   },
   "license": "MIT",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "C2FO Innovation Lab",
   "description": "Symmetric cryptography with a passphrase for node and the browser",
   "homepage": "https://c2fo-lab.github.io/webcrypto-crypt",
@@ -21,8 +21,8 @@
     "email": "labs@c2fo.com"
   },
   "dependencies": {
-    "@babel/preset-env": "^7.8.3",
-    "async": "^3.1.1",
+    "@babel/preset-env": "^7.8.7",
+    "async": "^3.2.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
     "babelify": "^10.0.0",
@@ -35,19 +35,19 @@
     "fs-extra": "^8.1.0",
     "fstat-mode": "0.0.1",
     "node-webcrypto-ossl": "^1.0.48",
-    "npm": "^6.13.6",
+    "npm": "^6.14.2",
     "readline-sync": "^1.4.10",
     "through2": "^3.0.1",
-    "yargs": "^15.1.0"
+    "yargs": "^15.3.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-import": "^2.20.1",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
-    "mocha": "^7.0.1"
+    "mocha": "^7.1.0"
   },
   "engines": {
     "node": "12",

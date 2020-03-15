@@ -1,4 +1,9 @@
-## 2020-01-28  Release 0.2.2
+## 2020-03-14  Release 0.2.4
+
+Bump [acorn](https://github.com/acornjs/acorn) from 7.1.0 to 7.1.1.
+Upgrade misc npm packages.
+
+## 2020-01-28  Release 0.2.3
 
 Update code snippets in README.
 
