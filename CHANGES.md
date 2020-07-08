@@ -1,3 +1,8 @@
+## 2020-07-08  Release 0.2.5.
+
+Upgrade misc npm packages.
+Change node-webcrypto-ossl constructor call to conform to latest API
+
 ## 2020-03-14  Release 0.2.4
 
 Bump [acorn](https://github.com/acornjs/acorn) from 7.1.0 to 7.1.1.

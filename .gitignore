@@ -1,4 +1,7 @@
 # Logs
+dist
+test/browser
+examples/browser
 logs
 *.log
 npm-debug.log*
