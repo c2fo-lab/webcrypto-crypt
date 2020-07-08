@@ -1,3 +1,6 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
 LICENSE,4.0K,a6f5c7d3a2606ed237064349fd7fe8fff0646f71512ef8e6842cd5e1923976c0
 test/icon.png,4.0K,5795ae575f2a04c03ffd659dbe665cfad694f15f537b9f8b3673b3003a36da5d
 test/decrypt.js,16K,d69a81381a778c7aebdc7a969b0609dd5871216d9627d2f026bb0a5d2b3457e4
@@ -21,3 +24,16 @@ lib/node-streams.js,4.0K,6fa0afd30ad712bd41bbb41ef7fa3b13b794944eb31be5082a44336
 lib/transcoder.js,4.0K,ca9177a1f8be68dbad9da815cf32dc2f0893dd0ef90b78965b42dd226e171be3
 CHANGES.md,4.0K,0be4d5932b5467d6ec7d72eee41fa2cb223edb99b9adeba19ad73be194d05cd4
 .travis.yml,4.0K,2ac53922ac128dda10f58ba7caf160790ac435ffdfe616716d34e9bc1b51f2ed
+-----BEGIN PGP SIGNATURE-----
+Version: Keybase OpenPGP v2.1.13
+Comment: https://keybase.io/crypto
+
+wsBcBAABCgAGBQJfBkHiAAoJEFXbw7aEigbJ7MEH/iQ1aI2kadsDLKgaPXA5YlGL
+TYtJYkl6D5snoRopeyCwlt8XhV6KxUowPrbADl4H139sIXU+9DMgeG+X0LqS7eOW
+ymnMp/h9OfCNIC18cVwuxMMd2U7prhmU2Qf5udfk3R1P2MFEermuVyQyQQ87xzkK
+kMO1IbZy0VDeRmyIdJhQ8/lpaAfMRjaCj2crtV2Kt9YGOjS4wuHVXUkpMss5cUSR
+7HbwiCkWlzKgRnEVaQBVkoLwnpmnSM4TLYWk6YinnApFkJJKxG0BiRNLCTIbxllN
+qKt2iKHxtK76FE6kJH6zW2+0w1Rsjs/fnYgHry59w2ijReMOhPQF8M25ajzbZU4=
+=RGpq
+-----END PGP SIGNATURE-----
+
