@@ -194,6 +194,8 @@ wcrypt.encrypt(askForData())
 
 ## Node.js
 
+Before running tests, check to make sure you're using at least v13.9.0.
+
     λ npm run test
 
 ## Browsers
