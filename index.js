@@ -16,7 +16,7 @@ module.exports = exports = {
     var wcrypt = this
 
     try {
-      wcrypt.crypto = new Webcrypto()
+      wcrypt.crypto = new Webcrypto.Crypto()
     } catch (err) {
       wcrypt.crypto = window.crypto || window.msCrypto
     }
