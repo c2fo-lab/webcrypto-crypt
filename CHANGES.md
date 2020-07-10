@@ -1,5 +1,9 @@
 ## 2020-07-08  Release 0.2.5.
 
+Bump .travis.yml node version from 12.4.0 to 13.9.0
+
+## 2020-07-08  Release 0.2.5.
+
 Upgrade misc npm packages.
 Change node-webcrypto-ossl constructor call to conform to latest API
 
