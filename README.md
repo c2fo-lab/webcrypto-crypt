@@ -311,7 +311,7 @@ Will append the ```wcrypt.delimiter``` to the end of the encrypted data before r
 
     wcrypt.rawEncrypt('Some text to encrypt', {includeHeader: true});
 
-Will append a cleartext header to the returned data including: ```initialization vector```, ```iterations```, ```salt```, and ```tagLength``` used in the encryption.  See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L322-L329).
+Will append a cleartext header to the returned data including: ```initialization vector```, ```iterations```, ```salt```, and ```tagLength``` used in the encryption.  See [these lines](https://github.com/c2fo-lab/webcrypto-crypt/blob/master/index.js#L293-L300).
 
 ## wcrypt.subtle
 

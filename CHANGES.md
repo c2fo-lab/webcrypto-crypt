@@ -1,4 +1,4 @@
-## 2020-07-08  Release 0.2.5.
+## 2020-07-10  Release 0.2.6.
 
 Bump .travis.yml node version from 12.4.0 to 13.9.0
 
