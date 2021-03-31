@@ -28,7 +28,7 @@
     "babelify": "^10.0.0",
     "binary-split": "^1.0.5",
     "bindexof": "^1.0.1",
-    "blob-to-buffer": "^1.2.8",
+    "blob-to-buffer": "^1.2.9",
     "browserify": "^16.5.1",
     "chop": "0.0.1",
     "expect": "^26.1.0",
